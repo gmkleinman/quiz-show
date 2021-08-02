@@ -2,7 +2,7 @@ const express = require('express')
 const next = require('next')
 // const { createProxyMiddleware } = require("http-proxy-middleware")
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 8080
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const handle = app.getRequestHandler()
@@ -24,13 +24,13 @@ const apiPaths = {
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 const server = express()
-const http = require('http').Server(server);
-const io = require('socket.io')(http, {
-    transports: ['websocket'],
-});
-io.on('connection', (socket) => {
-    console.log("connected to socket!")
-})
+// const http = require('http').Server(server);
+// const io = require('socket.io')(http, {
+//     transports: ['websocket'],
+// });
+// io.on('connection', (socket) => {
+//     console.log("connected to socket!")
+// })
 
 app.prepare().then(() => {
     console.log("prepared")
