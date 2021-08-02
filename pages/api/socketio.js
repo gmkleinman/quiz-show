@@ -6,10 +6,24 @@ const ioHandler = (req, res) => {
 
         const io = new Server(res.socket.server)
 
+        io.emit('update user count', io.engine.clientsCount);
+
         io.on('connection', socket => {
             socket.broadcast.emit('a user connected')
-            socket.on('hello', msg => {
-                socket.emit('hello', 'world!')
+            socket.broadcast.emit('update user count', io.engine.clientsCount)
+
+            socket.on('custom thing', () => {
+                console.log("custom")
+            })
+
+            socket.on('disconnect', () => {
+                console.log("disconnected")
+                io.emit('update user count', io.engine.clientsCount);
+            })
+
+            socket.on('counting', () => {
+                io.emit('update user count', io.engine.clientsCount);
+                console.log("counting")
             })
         })
 

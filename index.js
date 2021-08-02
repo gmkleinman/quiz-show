@@ -7,10 +7,6 @@ const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const handle = app.getRequestHandler()
 
-
-
-console.log("doing stuff")
-
 const apiPaths = {
     '/api': {
         target: 'http://localhost:3080',
@@ -24,23 +20,13 @@ const apiPaths = {
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 const server = express()
-// const http = require('http').Server(server);
-// const io = require('socket.io')(http, {
-//     transports: ['websocket'],
-// });
-// io.on('connection', (socket) => {
-//     console.log("connected to socket!")
-// })
-
 app.prepare().then(() => {
-    console.log("prepared")
 
     // if (isDevelopment) {
     //     server.use('/api', createProxyMiddleware(apiPaths['/api']));
     // }
 
     server.all('*', (req, res) => {
-        console.log("handled")
         return handle(req, res)
     })
 
