@@ -5,6 +5,7 @@ import styles from '../../styles/board.module.css'
 class Column extends React.Component {
     constructor(props) {
         super(props)
+        this.id = props.id;
         this.points = [200, 400, 600, 800, 1000]
         this.category = props.category;
     }
@@ -12,10 +13,14 @@ class Column extends React.Component {
     render() {
         return (
             <div className={styles.column}>
-                <h3>{this.category}</h3>
+                <div className={styles.header}>{this.category}</div>
                 {this.points.map((points, i) => {
                     return (
-                        <Cell points={points} key={i} />)
+                        <Cell 
+                        points={points} 
+                        key={i} 
+                        id={`${this.id}_row_${i}`}
+                        />)
                 })}
 
             </div>

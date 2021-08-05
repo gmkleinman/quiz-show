@@ -8,22 +8,47 @@ const ioHandler = (req, res) => {
 
         io.emit('update user count', io.engine.clientsCount);
 
+        let players = [];
+        let buzzedPlayers = [];
+
         io.on('connection', socket => {
-            socket.broadcast.emit('a user connected')
-            socket.broadcast.emit('update user count', io.engine.clientsCount)
+            socket.emit('a user connected')
+            socket.emit('update user count', io.engine.clientsCount)
+
+            //broadcast sends to all OTHER clients
+            //emit sends to ALL clients
+
+            console.log("players:")
+            console.log(players)
+            players.push(socket.id);
+
+            socket.emit('update players', players);
 
             socket.on('custom thing', () => {
                 console.log("custom")
             })
 
             socket.on('disconnect', () => {
+                let i = players.indexOf(socket.id);
+                if (i > -1) {
+                    // this doesn't really do enough I don't think
+                    players[i] = null;
+                    socket.emit('update players', players)
+                }
+
                 console.log("disconnected")
                 io.emit('update user count', io.engine.clientsCount);
             })
 
             socket.on('counting', () => {
                 io.emit('update user count', io.engine.clientsCount);
-                console.log("counting")
+            })
+
+            socket.on('player buzzed in', (player) => {
+                if (!buzzedPlayers.includes(player)) {
+                    buzzedPlayers.push(player)
+                }
+                io.emit('updating buzzed players', buzzedPlayers);
             })
         })
 

@@ -1,0 +1,70 @@
+.playersUI {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    color: white;
+    font-size: 30px;
+    border: solid black 10px;
+    border-left: none;
+    flex: auto;
+}
+
+.playercontainer {
+    height: 470px;
+    width: 325px;
+    border: black solid 6px;
+}
+
+.buzzedplayercontainer {
+    height: 470px;
+    width: 325px;
+    border: white solid 6px;
+}
+
+.playerchunk {
+    display:flex;
+}
+
+.topbar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+.timer {
+    width: 250px;
+    height: 40px;
+    background: blue;
+}
+
+.nameplate {
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.nothost {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+
+.score {
+    border: black solid 5px;
+}
+
+.buzzedscore {
+    border: white solid 5px;
+}
+
+.nothost > * {
+    padding: 10px;
+    width: 100%;
+}
+
+.host {
+    border-bottom: black solid 5px;
+    width: 110%;
+}

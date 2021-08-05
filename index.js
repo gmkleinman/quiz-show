@@ -1,5 +1,6 @@
 const express = require('express')
 const next = require('next')
+const open = require('open')
 // const { createProxyMiddleware } = require("http-proxy-middleware")
 
 const port = process.env.PORT || 8080
@@ -32,6 +33,7 @@ app.prepare().then(() => {
 
     server.listen(port, (err) => {
         if (err) throw err
+        open('http://localhost:8080');
         console.log(`> Ready on http://localhost:${port}`)
     })
 }).catch(err => {
