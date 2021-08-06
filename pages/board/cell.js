@@ -1,114 +1,104 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../../styles/board.module.css'
+import { Gstate } from './socketLogic';
+
+const Cell = (props) => {
+    const [classes, setClasses] = useState(styles.cell);
+    const [top, setTop] = useState(0);
+    const [left, setLeft] = useState(0);
+    const [shown, setShown] = useState(false);
+    const [showPoints, setShowPoints] = useState(true);
+    const [clueClasses, setClueClasses] = useState(styles.clue);
+    const [undo, setUndo] = useState(false);
+    const [cooldown, setCooldown] = useState(false);
+    let { players, playerNum, socket } = React.useContext(Gstate)
 
 
-class Cell extends React.Component {
-    constructor(props) {
-        super(props)
-        this.points = props.points;
-        this.id = props.id;
-        this.cooldown = false;
-        this.undo = false;
-        this.state = {
-            classes: styles.cell,
-            top: 0,
-            left: 0,
-            shown: false,
-            showPoints: true,
-            clueClasses: styles.clue,
-        }
-    }
+    let points = props.points
+    let id = props.id
 
-    componentDidMount() {
-        this.setCSS();
-        this.addListeners();
-    }
+    useEffect(() => {
+        setCSS();
+        addListeners();
 
-    addListeners() {
+        socket.on("send clue to clients", (clickedid) => {
+            if (!cooldown && id === clickedid) {
+                setCooldown(true);
+                if (!shown) {
+                    setClasses(styles.active)
+                    setShowPoints(false)
+                    setShown(true)
+                    setClueClasses(styles.clue)
+                } else {
+                    setClasses(styles.seenclue)
+                    setShowPoints(true)
+                }
+
+                setTimeout(() => {
+                    setClueClasses(styles.clue + ' ' + styles.activeclue)
+                }, 1);
+
+                setTimeout(() => {
+                    setCooldown(false);
+                }, 200);
+            }
+        })
+    })
+
+    const addListeners = () => {
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Control') {
-                this.undo = true;
+                setUndo(true);
             }
         })
 
         window.addEventListener('keyup', (e) => {
             if (e.key === 'Control') {
-                this.undo = false;
+                setUndo(false);
             }
         })
     }
 
-    setCSS() {
-        let bounds = document.getElementById(this.id).getBoundingClientRect()
-        let top = bounds.top;
-        let left = bounds.left;
-        this.setState({
-            top,
-            left,
-        })
+    const setCSS = () => {
+        let bounds = document.getElementById(id).getBoundingClientRect()
+        let newTop = bounds.top;
+        let newLeft = bounds.left;
+        setTop(newTop)
+        setLeft(newLeft)
     }
 
-    handleClick(e) {
-        if (!this.cooldown) {
-            this.cooldown = true;
-            if (!this.state.shown) {
-                this.setState({
-                    classes: styles.active,
-                    showPoints: false,
-                    shown: true,
-                })
-            } else {
-                this.setState({
-                    classes: styles.seenclue,
-                    showPoints: true,
-                })
-            }
-
-            setInterval(() => {
-                this.setState({
-                    clueClasses: styles.clue + ' ' + styles.activeclue,
-                })
-            }, 1);
-
-            setInterval(() => {
-                this.cooldown = false;
-            }, 1000);
-        }
+    const handleClick = (e) => {
+        socket.emit("clue clicked", id)
     }
 
-    handleUndo(e) {
-        if (this.undo) {
-            console.log("inside handle click undoing")
-            this.setState({
-                classes: styles.cell,
-                shown: false,
-                showPoints: true,
-                clueClasses: styles.clue,
-            })
+    const handleUndo = (e) => {
+        if (undo) {
+            setClasses(styles.cell)
+            setShown(false)
+            setShowPoints(true)
+            setClueClasses(styles.clue)
             setInterval(() => {
-                this.setCSS();
+                setCSS();
             }, 1);
         }
     }
 
-    render() {
-        return (
-            <div className={styles.cellcontainer} onClick={this.handleUndo.bind(this)}>
-                <div id={this.id} className={this.state.classes}
-                    onClick={this.handleClick.bind(this)}
-                    style={{ top: this.state.top, left: this.state.left }}
-                >
-                    {
-                        this.state.showPoints ?
-                            (<div className={styles.points}>{this.points}</div>)
-                            : (<div className={this.state.clueClasses}>
-                                ALLIE IS A CLUE IN THIS GAME BECAUSE SHE IS MY FAVORITE AND I LOVE HER AND I DON'T KNOW HOW LONG THESE CLUES USUALLY ARE
-                            </div>)
-                    }
-                </div>
+    return (
+        <div className={styles.cellcontainer} onClick={handleUndo}>
+            <div id={id} className={classes}
+                onClick={handleClick}
+                style={{ top: top, left: left }}
+            >
+                {
+                    showPoints ?
+                        (<div className={styles.points}>{points}</div>)
+                        : (<div className={clueClasses}>
+                            ALLIE IS A CLUE IN THIS GAME BECAUSE SHE IS MY FAVORITE AND I LOVE HER AND I DON'T KNOW HOW LONG THESE CLUES USUALLY ARE
+                        </div>)
+                }
             </div>
-        )
-    }
+        </div>
+    )
 }
 
 export default Cell;

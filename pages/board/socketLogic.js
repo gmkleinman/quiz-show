@@ -9,7 +9,6 @@ export const Gstate = React.createContext();
 class SocketLogic extends React.Component {
     constructor(props) {
         super(props)
-        this.connected = false;
         this.state = {
             userCount: 0,
             players: [],
@@ -17,23 +16,36 @@ class SocketLogic extends React.Component {
             playerNum: null,
             buzzedPlayers: null,
             activePlayer: null,
+            currentCluePoints: 0,
+            deny: true,
         }
 
     }
 
     componentDidMount() {
         this.addEventListeners();
-        if (!this.connected) {
+        if (!this.state.socket) {
             fetch('/api/socketio').finally(() => {
                 this.setState({
                     socket: io(),
                 })
+
+                this.state.socket.on('custom stuff', () => {
+                    console.log("booo")
+                })
+
+                this.state.socket.on('a user connected', (sockid) => {
+                    console.log(`cell knows ${sockid} connected`)
+
+                })
+
 
                 this.state.socket.on('connect', () => {
                     this.state.socket.emit('counting')
                 })
 
                 this.state.socket.on('update user count', (userCount) => {
+                    console.log("updating")
                     this.setState({
                         userCount,
                     })
@@ -59,6 +71,13 @@ class SocketLogic extends React.Component {
                     })
                 })
 
+                this.state.socket.on('clue chosen', points => {
+                    console.log("new points")
+                    this.setState({
+                        currentCluePoints: points,
+                    })
+                })
+
             })
         }
     }
@@ -69,6 +88,10 @@ class SocketLogic extends React.Component {
                 // do nothing, this is undo
             } else if (e.key === ' ') {
                 this.state.socket.emit('player buzzed in', this.state.playerNum)
+            } else if (e.key === 'c') {
+                this.setState({
+                    deny: false,
+                })
             }
         })
     }
@@ -76,12 +99,14 @@ class SocketLogic extends React.Component {
     render() {
         return (
             <div className={styles.socketcontainer}>
-                <Gstate.Provider value={this.state}>
-                    {/* <span>Users: {this.state.userCount}</span> */}
-                    <Board socket={this.state.socket}
-                        players={this.state.players} />
-                    <PlayersUI />
-                </Gstate.Provider>
+                <span>Users: {this.state.userCount}</span>
+                {this.state.deny ? null :
+                    <Gstate.Provider value={this.state}>
+                        <Board socket={this.state.socket}
+                            players={this.state.players} />
+                        <PlayersUI />
+                    </Gstate.Provider>
+                }
             </div>
         )
     }

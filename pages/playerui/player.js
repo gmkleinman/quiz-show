@@ -10,28 +10,26 @@ const Player = (props) => {
     let { players, playerNum, socket, buzzedPlayers } = React.useContext(Gstate)
 
     const isMe = () => {
-        if (socket) {
-            return (
-                <span>
-                    {(players[slotNum] === socket.id) ?
-                        ('(YOU!)')
-                        : null}
-                </span>
-            )
-        }
+        return (
+            <span>
+                {(players[slotNum] === socket.id) ?
+                    ('(YOU!)')
+                    : null}
+            </span>
+        )
     }
 
     const isBuzzedBorder = () => {
         if (buzzedPlayers && buzzedPlayers.includes(slotNum)) {
             return styles.buzzedplayercontainer
-        } 
+        }
         return styles.playercontainer
     }
 
-    const isBuzzedScore = () => {
+    const isBuzzedScoreBorder = () => {
         if (buzzedPlayers && buzzedPlayers.includes(slotNum)) {
             return styles.buzzedscore
-        } 
+        }
         return styles.score
     }
 
@@ -45,7 +43,7 @@ const Player = (props) => {
                     <div className={styles.host} />
                     :
                     <div className={styles.nothost}>
-                        <div className={isBuzzedScore()}>
+                        <div className={isBuzzedScoreBorder()}>
                             {score}
                         </div>
                         <div className={styles.timer}>

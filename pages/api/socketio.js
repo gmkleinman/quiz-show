@@ -12,28 +12,29 @@ const ioHandler = (req, res) => {
         let buzzedPlayers = [];
 
         io.on('connection', socket => {
-            socket.emit('a user connected')
-            socket.emit('update user count', io.engine.clientsCount)
+            io.emit('a user connected', socket.id)
+            io.emit('update user count', io.engine.clientsCount)
+
+            socket.on('clue clicked', (id) => {
+                io.emit('send clue to clients', id)
+            })
 
             //broadcast sends to all OTHER clients
-            //emit sends to ALL clients
+            //io.emit sends to ALL clients
+            //DON'T USE SOCKET.EMIT
 
             console.log("players:")
             console.log(players)
             players.push(socket.id);
 
-            socket.emit('update players', players);
-
-            socket.on('custom thing', () => {
-                console.log("custom")
-            })
+            io.emit('update players', players);
 
             socket.on('disconnect', () => {
                 let i = players.indexOf(socket.id);
                 if (i > -1) {
                     // this doesn't really do enough I don't think
                     players[i] = null;
-                    socket.emit('update players', players)
+                    io.emit('update players', players)
                 }
 
                 console.log("disconnected")
