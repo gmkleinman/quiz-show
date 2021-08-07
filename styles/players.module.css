@@ -21,6 +21,24 @@
     border: white solid 6px;
 }
 
+.activeplayercontainer {
+    height: 470px;
+    width: 325px;
+    border: rgb(25, 124, 0) solid 6px;
+}
+
+.score {
+    border: black solid 5px;
+}
+
+.buzzedscore {
+    border: white solid 5px;
+}
+
+.activescore {
+    border: rgb(25, 124, 0) solid 6px;
+}
+
 .playerchunk {
     display:flex;
 }
@@ -51,13 +69,7 @@
     width: 100%;
 }
 
-.score {
-    border: black solid 5px;
-}
 
-.buzzedscore {
-    border: white solid 5px;
-}
 
 .nothost > * {
     padding: 10px;

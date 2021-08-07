@@ -12,8 +12,6 @@ const Cell = (props) => {
     const [undo, setUndo] = useState(false);
     const [cooldown, setCooldown] = useState(false);
     let { players, playerNum, socket } = React.useContext(Gstate)
-
-
     let points = props.points
     let id = props.id
 
@@ -68,16 +66,16 @@ const Cell = (props) => {
     }
 
     const handleClick = (e) => {
-        socket.emit("clue clicked", id)
+        socket.emit("clue clicked", id, points)
     }
 
     const handleUndo = (e) => {
-        if (undo) {
+        if (undo && playerNum === 3) {
             setClasses(styles.cell)
             setShown(false)
             setShowPoints(true)
             setClueClasses(styles.clue)
-            setInterval(() => {
+            setTimeout(() => {
                 setCSS();
             }, 1);
         }

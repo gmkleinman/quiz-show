@@ -23,29 +23,17 @@ class SocketLogic extends React.Component {
     }
 
     componentDidMount() {
-        this.addEventListeners();
         if (!this.state.socket) {
             fetch('/api/socketio').finally(() => {
                 this.setState({
                     socket: io(),
                 })
 
-                this.state.socket.on('custom stuff', () => {
-                    console.log("booo")
-                })
-
-                this.state.socket.on('a user connected', (sockid) => {
-                    console.log(`cell knows ${sockid} connected`)
-
-                })
-
-
                 this.state.socket.on('connect', () => {
                     this.state.socket.emit('counting')
                 })
 
                 this.state.socket.on('update user count', (userCount) => {
-                    console.log("updating")
                     this.setState({
                         userCount,
                     })
@@ -71,27 +59,36 @@ class SocketLogic extends React.Component {
                     })
                 })
 
-                this.state.socket.on('clue chosen', points => {
-                    console.log("new points")
+                this.state.socket.on('active player selected', (activePlayer) => {
+                    console.log(activePlayer)
                     this.setState({
-                        currentCluePoints: points,
+                        activePlayer,
+                        buzzedPlayers: [],
                     })
                 })
+                
 
             })
         }
-    }
 
-    addEventListeners() {
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Control') {
                 // do nothing, this is undo
             } else if (e.key === ' ') {
+                //buzz in
                 this.state.socket.emit('player buzzed in', this.state.playerNum)
             } else if (e.key === 'c') {
+                //let me into the game
                 this.setState({
                     deny: false,
                 })
+            } else if (e.key === 'm') {
+                //choose a player who buzzed in
+                this.state.socket.emit('select buzz in')
+            } else if (e.key === ',') {
+                //wrong answer; let people buzz in again
+            } else if (e.key === '.') {
+                //right answer; add points
             }
         })
     }

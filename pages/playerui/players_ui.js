@@ -2,7 +2,7 @@ import React from 'react'
 import Player from './player'
 import styles from '../../styles/players.module.css'
 import { Gstate } from '../board/socketLogic';
-
+import Host from './host'
 
 
 const PlayersUI = (props) => {
@@ -23,8 +23,9 @@ const PlayersUI = (props) => {
             </div>
             <div className={styles.playerchunk}>
                 <Player name={playerNames[2]} slotNum={2} />
-                <Player name={playerNames[3]} slotNum={3}
-                    host={true} />
+                {/* <Player name={playerNames[3]} slotNum={3}
+                    host={true} /> */}
+                <Host name={playerNames[3]}/>
             </div>
 
         </div>
