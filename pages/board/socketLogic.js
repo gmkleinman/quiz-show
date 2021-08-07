@@ -21,6 +21,7 @@ class SocketLogic extends React.Component {
             playerName: 'Nom de Plume',
             playerNames: [],
             playerSitting: false,
+            round: 1,
         }
     }
 
@@ -96,28 +97,46 @@ class SocketLogic extends React.Component {
                         playerNames,
                     })
                 })
+
+                this.state.socket.on('io changing round', () => {
+                    let newRound;
+                    this.state.round === 1 ? newRound = 2 : newRound = 1;
+                    this.setState({
+                        round: newRound,
+                    })
+                })
             })
         }
 
         window.addEventListener('keydown', (e) => {
+            // TODO: this runs every render; prefer only runs once
             if (!this.state.denyEntry) {
                 if (e.key === 'Control') {
-                    // do nothing, this is undo
+                    this.setState({
+                        undo: true,
+                    })
                 } else if (e.key === ' ') {
                     // buzz in
                     if (this.state.allowBuzzins) {
                         this.state.socket.emit('player buzzed in', this.state.playerNum)
                     }
-                    //SET THESE TO HOST ONLY AT SOME POINT
+                    // BEFOREPRODUCTION: MAKE IT SO ONLY PLAYER NUM 3 CAN DO THIS - HOST
                 } else if (e.key === 'n') {
                     this.state.socket.emit('allow buzz ins')
                 } else if (e.key === 'm') {
-                    // choose a player who buzzed in
                     this.state.socket.emit('select buzz in')
                 } else if (e.key === ',' || e.key === '.') {
                     this.state.socket.emit('clue answered', e.key)
+                } else if (e.key === 'r') {
+                    this.state.socket.emit('round change')
                 }
             }
+        })
+
+        window.addEventListener('keyup', (e) => {
+            this.setState({
+                undo: false,
+            })
         })
     }
 
@@ -153,8 +172,7 @@ class SocketLogic extends React.Component {
                     </div>
                     :
                     <Gstate.Provider value={this.state}>
-                        <Board socket={this.state.socket}
-                            players={this.state.players} />
+                        <Board />
                         <PlayersUI />
                     </Gstate.Provider>
                 }

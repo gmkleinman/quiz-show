@@ -4,25 +4,23 @@ import { Gstate } from './socketLogic';
 
 const Cell = (props) => {
     const [classes, setClasses] = useState(styles.cell);
+    const [showPoints, setShowPoints] = useState(true);
+    const [shown, setShown] = useState(false);
+    const [clueClasses, setClueClasses] = useState(styles.clue);
     const [top, setTop] = useState(0);
     const [left, setLeft] = useState(0);
-    const [shown, setShown] = useState(false);
-    const [showPoints, setShowPoints] = useState(true);
-    const [clueClasses, setClueClasses] = useState(styles.clue);
-    const [undo, setUndo] = useState(false);
     const [cooldown, setCooldown] = useState(false);
-    let { players, playerNum, socket } = React.useContext(Gstate)
+    const [origin, setOrigin] = useState([0, 0])
+    const [gotOrigin, setGotOrigin] = useState(false)
+    let { socket, round, undo } = React.useContext(Gstate)
     let points = props.points
     let id = props.id
 
     useEffect(() => {
-        setCSS();
-        addListeners();
-
-        socket.on("send clue to clients", (clickedid) => {
+        socket.on("send clue to clients", (clickedid, hideClue) => {
             if (!cooldown && id === clickedid) {
                 setCooldown(true);
-                if (!shown) {
+                if (!hideClue) {
                     setClasses(styles.active)
                     setShowPoints(false)
                     setShown(true)
@@ -40,51 +38,67 @@ const Cell = (props) => {
                 setTimeout(() => {
                     setCooldown(false);
                 }, 200);
-
-            }
-        })
-    })
-
-    const addListeners = () => {
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Control') {
-                setUndo(true);
             }
         })
 
-        window.addEventListener('keyup', (e) => {
-            if (e.key === 'Control') {
-                setUndo(false);
+        socket.on("io sends clue reset", (resetid) => {
+            if (resetid === id) {
+                resetClue();
             }
         })
-    }
 
-    const setCSS = () => {
-        let bounds = document.getElementById(id).getBoundingClientRect()
-        let newTop = bounds.top;
-        let newLeft = bounds.left;
-        setTop(newTop)
-        setLeft(newLeft)
-    }
+    }, [shown])
 
-    const handleClick = (e) => {
-        socket.emit("clue clicked", id, points)
-    }
+    useEffect(() => {
+        setCoordinates();
+        resetClue();
+    }, [origin, round])
 
-    const handleUndo = (e) => {
-        if (undo && playerNum === 3) {
-            setClasses(styles.cell)
-            setShown(false)
-            setShowPoints(true)
-            setClueClasses(styles.clue)
-            setTimeout(() => {
-                setCSS();
-            }, 1);
+    useEffect(() => {
+        socket.emit("get initial clue status")
+
+        socket.on("io sends clue status", shownClues => {
+            if (shownClues[id]) {
+                setShown(true);
+                setClasses(styles.seenclue)
+            }
+        })
+    }, [])
+
+    const setCoordinates = () => {
+        if (!gotOrigin) {
+            let bounds = document.getElementById(id).getBoundingClientRect()
+            setGotOrigin(true)
+            setOrigin([bounds.left, bounds.top])
+            setTop(bounds.top)
+            setLeft(bounds.left)
         }
     }
 
+    const handleClick = (e) => {
+        socket.emit("clue clicked", id, points, shown)
+    }
+
+    const handleUndo = (e) => {
+        // BEFOREPRODUCTION: MAKE IT SO ONLY PLAYER NUM 3 CAN DO THIS - HOST
+        if (undo) {
+            socket.emit("clue reset", id)
+        }
+    }
+
+    const resetClue = () => {
+        setClasses(styles.cell)
+        setShowPoints(true)
+        setShown(false)
+        setClueClasses(styles.clue)
+        setTop(origin[1])
+        setLeft(origin[0])
+    }
+
     return (
-        <div className={styles.cellcontainer} onClick={handleUndo}>
+        <div className={styles.cellcontainer}
+            onClick={handleUndo}
+        >
             <div id={id} className={classes}
                 onClick={handleClick}
                 style={{ top: top, left: left }}

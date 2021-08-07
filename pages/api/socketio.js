@@ -17,12 +17,12 @@ const ioHandler = (req, res) => {
         let playerPoints = [0, 0, 0];
         let allowedBuzzin = [true, true, true];
         let playerNames = ['(P1)', '(P2)', '(P3)', '(Host)']
-
+        let shownClues = {};
 
         io.on('connection', socket => {
             //broadcast sends to all OTHER clients
             //io.emit sends to ALL clients
-            //DON'T USE SOCKET.EMIT
+            //DON'T USE SOCKET.EMIT ON THE BACK END
 
 
             // players.push(socket.id);
@@ -68,13 +68,21 @@ const ioHandler = (req, res) => {
             // CLUE LOGIC
 
             // keeping track of clues will help deal with disconnect glitches
-            // let shownClues = Array(30).fill(false)
-            socket.on('clue clicked', (id, points) => {
-                io.emit('send clue to clients', id)
-                currentCluePoints = points;
-                console.log("got points from click")
+            socket.on('clue clicked', (id, points, shown) => {
+                io.emit('send clue to clients', id, shown)
                 io.emit('io allowing buzz ins')
+                shownClues[id] = true;
+                currentCluePoints = points;
                 allowedBuzzin = [true, true, true]
+            })
+
+            socket.on("clue reset", (id) => {
+                io.emit("io sends clue reset", id);
+            })
+
+            socket.on('get initial clue status', () => {
+                io.emit('io sends clue status', shownClues)
+                console.log("send out shown clues")
             })
 
 
@@ -117,6 +125,13 @@ const ioHandler = (req, res) => {
                 console.log("clue answered")
             })
 
+
+            // CHANGE ROUND
+            socket.on('round change', () => {
+                shownClues = {};
+                io.emit('io changing round')
+                console.log("io changing round")
+            })
         })
 
         res.socket.server.io = io
