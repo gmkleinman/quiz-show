@@ -30,6 +30,7 @@ const Cell = (props) => {
                 } else {
                     setClasses(styles.seenclue)
                     setShowPoints(true)
+                    socket.emit('disable buzz ins')
                 }
 
                 setTimeout(() => {
@@ -39,6 +40,7 @@ const Cell = (props) => {
                 setTimeout(() => {
                     setCooldown(false);
                 }, 200);
+
             }
         })
     })

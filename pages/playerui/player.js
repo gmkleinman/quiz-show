@@ -1,20 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../../styles/players.module.css'
 import { Gstate } from '../board/socketLogic';
 
 const Player = (props) => {
+    const [score, setScore] = useState(0);
     let name = props.name;
     let host = props.host;
-    let score = 0;
     let slotNum = props.slotNum;
-    let { players, activePlayer, socket, buzzedPlayers } = React.useContext(Gstate)
+    let { players, activePlayer, socket, buzzedPlayers, 
+        playerName, playerSitting } = React.useContext(Gstate)
+
+    useEffect(() => {
+        socket.on('io updating points', (playerPoints) => {
+            setScore(playerPoints[slotNum])
+        })
+    })
 
     const isMe = () => {
         return (
             <span>
-                {(players[slotNum] === socket.id) ?
+                {(players[slotNum] === socket.id)
+                    ?
                     ('(YOU!)')
-                    : null}
+                    :
+                    null}
             </span>
         )
     }
@@ -29,12 +38,16 @@ const Player = (props) => {
             return {
                 container: styles.activeplayercontainer,
                 score: styles.activescore
-            }  
+            }
         }
         return {
             container: styles.playercontainer,
             score: styles.score,
         }
+    }
+
+    const sit = () => {
+        socket.emit('player sits down', playerName, slotNum, socket.id)
     }
 
     return (
@@ -53,6 +66,14 @@ const Player = (props) => {
                         <div className={styles.timer}>
                         </div>
                     </div>
+                }
+                {playerSitting || players[slotNum]
+                    ?
+                    null
+                    :
+                    <button className={styles.sit} onClick={sit}>
+                        SIT
+                    </button>
                 }
             </div>
         </div>

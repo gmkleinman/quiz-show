@@ -6,8 +6,7 @@ import Host from './host'
 
 
 const PlayersUI = (props) => {
-    let playerNames = ['Allie', 'Grant', 'misterlongname', 'Host']
-    let {players, playerNum, socket} = React.useContext(Gstate)
+    let { playerNames } = React.useContext(Gstate)
 
     return (
         <div className={styles.playersUI}>
@@ -25,7 +24,7 @@ const PlayersUI = (props) => {
                 <Player name={playerNames[2]} slotNum={2} />
                 {/* <Player name={playerNames[3]} slotNum={3}
                     host={true} /> */}
-                <Host name={playerNames[3]}/>
+                <Host name={playerNames[3]} />
             </div>
 
         </div>

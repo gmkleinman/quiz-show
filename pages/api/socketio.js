@@ -8,11 +8,15 @@ const ioHandler = (req, res) => {
 
         io.emit('update user count', io.engine.clientsCount);
 
-        let players = [];
+        //at some point change players to an object, these arrays are ridic
+
+        let players = [null, null, null, null]; // for socket ids
         let buzzedPlayers = [];
         let currentCluePoints = 0;
         let activePlayer = null;
-
+        let playerPoints = [0, 0, 0];
+        let allowedBuzzin = [true, true, true];
+        let playerNames = ['(P1)', '(P2)', '(P3)', '(Host)']
 
 
         io.on('connection', socket => {
@@ -21,9 +25,9 @@ const ioHandler = (req, res) => {
             //DON'T USE SOCKET.EMIT
 
 
-            players.push(socket.id);
+            // players.push(socket.id);
             io.emit('update user count', io.engine.clientsCount)
-            io.emit('update players', players);
+            // io.emit('update players', players);
             // io.emit('a user connected', socket.id)
 
             socket.on('counting', () => {
@@ -33,12 +37,30 @@ const ioHandler = (req, res) => {
             socket.on('disconnect', () => {
                 let i = players.indexOf(socket.id);
                 if (i > -1) {
-                    // this doesn't really do enough I don't think
                     players[i] = null;
+                    playerNames[i] = '(DC)'
+                    io.emit('update names', playerNames)
                     io.emit('update players', players)
                 }
                 console.log("disconnected")
                 io.emit('update user count', io.engine.clientsCount);
+            })
+
+
+            // PLAYER ENTRY
+
+            socket.on('player enters room', () => {
+                io.emit('update names', playerNames)
+                io.emit('update players', players);
+                io.emit('io updating points', playerPoints) //this doesn't work
+            })
+
+            socket.on('player sits down', (playerName, slotNum, id) => {
+                playerNames[slotNum] = playerName;
+                players[slotNum] = id;
+                io.emit('update names', playerNames)
+                io.emit('update players', players);
+                io.emit('io updating points', playerPoints)
             })
 
 
@@ -50,30 +72,50 @@ const ioHandler = (req, res) => {
             socket.on('clue clicked', (id, points) => {
                 io.emit('send clue to clients', id)
                 currentCluePoints = points;
+                console.log("got points from click")
+                io.emit('io allowing buzz ins')
+                allowedBuzzin = [true, true, true]
             })
 
 
             // BUZZER LOGIC
-            socket.on('player buzzed in', (player) => {
-                if (!buzzedPlayers.includes(player)) {
-                    buzzedPlayers.push(player)
+            socket.on('allow buzz ins', () => {
+                console.log("allowing buzz ins")
+                io.emit('io allowing buzz ins')
+                allowedBuzzin = [true, true, true]
+            })
+
+            socket.on('disable buzz ins', () => {
+                console.log("disabled buzz ins")
+                io.emit('io disable buzz ins')
+            })
+
+            socket.on('player buzzed in', (playerNum) => {
+                if (!buzzedPlayers.includes(playerNum) && allowedBuzzin[playerNum]) {
+                    buzzedPlayers.push(playerNum)
                 }
                 io.emit('updating buzzed players', buzzedPlayers);
             })
 
-            // when io gets "pick buzzin", it selects at random and emits that player
             socket.on('select buzz in', () => {
-                console.log(buzzedPlayers)
                 let randomPlayer = buzzedPlayers[Math.floor(Math.random() * buzzedPlayers.length)];
                 io.emit('active player selected', randomPlayer)
                 activePlayer = randomPlayer;
                 buzzedPlayers = [];
-                console.log(randomPlayer)
             })
 
-            // when io gets wrong answer, emit score change for player and allow ringins
-            // when io gets right answer, emit score change for player and block ringins
-
+            socket.on('clue answered', (key) => {
+                if (key === ',') {
+                    playerPoints[activePlayer] -= currentCluePoints
+                    io.emit('io allowing buzz ins')
+                    allowedBuzzin[activePlayer] = false;
+                } else {
+                    playerPoints[activePlayer] += currentCluePoints
+                }
+                io.emit('io updating points', playerPoints)
+                activePlayer = null;
+                console.log("clue answered")
+            })
 
         })
 
