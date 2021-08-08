@@ -10,21 +10,13 @@ const PlayersUI = (props) => {
 
     return (
         <div className={styles.playersUI}>
-            {/* {socket ?
-                <div>
-                    Socket: {socket.id}
-                </div>
-                : null
-            } */}
             <div className={styles.playerchunk}>
                 <Player name={playerNames[0]} slotNum={0} />
                 <Player name={playerNames[1]} slotNum={1} />
             </div>
             <div className={styles.playerchunk}>
                 <Player name={playerNames[2]} slotNum={2} />
-                {/* <Player name={playerNames[3]} slotNum={3}
-                    host={true} /> */}
-                <Host name={playerNames[3]} />
+                <Host name={playerNames[3]}/>
             </div>
 
         </div>

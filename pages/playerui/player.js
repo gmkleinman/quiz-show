@@ -5,9 +5,8 @@ import { Gstate } from '../board/socketLogic';
 const Player = (props) => {
     const [score, setScore] = useState(0);
     let name = props.name;
-    let host = props.host;
     let slotNum = props.slotNum;
-    let { players, activePlayer, socket, buzzedPlayers, 
+    let { players, activePlayer, socket, buzzedPlayers,
         playerName, playerSitting } = React.useContext(Gstate)
 
     useEffect(() => {
@@ -32,17 +31,20 @@ const Player = (props) => {
         if (buzzedPlayers && buzzedPlayers.includes(slotNum)) {
             return {
                 container: styles.buzzedplayercontainer,
-                score: styles.buzzedscore
+                score: styles.buzzedscore,
+                timer: styles.timer,
             }
         } else if (activePlayer === slotNum) {
             return {
                 container: styles.activeplayercontainer,
-                score: styles.activescore
+                score: styles.activescore,
+                timer: styles.timeractive,
             }
         }
         return {
             container: styles.playercontainer,
             score: styles.score,
+            timer: styles.timer,
         }
     }
 
@@ -56,17 +58,13 @@ const Player = (props) => {
                 <div className={styles.nameplate}>
                     {name} {isMe()}
                 </div>
-                {host ?
-                    <div className={styles.host} />
-                    :
-                    <div className={styles.nothost}>
-                        <div className={isBuzzedBorder().score}>
-                            {score}
-                        </div>
-                        <div className={styles.timer}>
-                        </div>
+                <div className={styles.nothost}>
+                    <div className={isBuzzedBorder().score}>
+                        {score}
                     </div>
-                }
+                    <div className={isBuzzedBorder().timer}>
+                    </div>
+                </div>
                 {playerSitting || players[slotNum]
                     ?
                     null

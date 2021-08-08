@@ -4,7 +4,6 @@ import styles from '../../styles/board.module.css'
 
 const Board = (props) => {
     let categories = [];
-    let round = props.round
 
     const initCategories = () => {
         for (let i = 0; i < 6; i++) {
@@ -12,7 +11,6 @@ const Board = (props) => {
             categories.push(category);
         }
     }
-
 
     initCategories();
 
@@ -22,13 +20,11 @@ const Board = (props) => {
                 return (
                     <Column
                         category={category} 
-                        key={i}
-                        round={round}
+                        key={category}
                         id={`column_${i}`}
                     />
                 )
             })}
-
         </div>
     )
 }

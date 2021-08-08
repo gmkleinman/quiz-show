@@ -80,7 +80,7 @@ class SocketLogic extends React.Component {
                     })
                 })
 
-                this.state.socket.on('io updating points', (playerPoints) => {
+                this.state.socket.on('io updating points', () => {
                     this.setState({
                         activePlayer: null,
                     })
@@ -129,6 +129,8 @@ class SocketLogic extends React.Component {
                     this.state.socket.emit('clue answered', e.key)
                 } else if (e.key === 'r') {
                     this.state.socket.emit('round change')
+                } else if (e.key === 'y') {
+                    this.state.socket.emit('start host countdown')
                 }
             }
         })

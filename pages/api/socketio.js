@@ -56,6 +56,10 @@ const ioHandler = (req, res) => {
             })
 
             socket.on('player sits down', (playerName, slotNum, id) => {
+                console.log("sitting; name, slotnum, id")
+                console.log(playerName)
+                console.log(slotNum)
+                console.log(id)
                 playerNames[slotNum] = playerName;
                 players[slotNum] = id;
                 io.emit('update names', playerNames)
@@ -83,6 +87,11 @@ const ioHandler = (req, res) => {
             socket.on('get initial clue status', () => {
                 io.emit('io sends clue status', shownClues)
                 console.log("send out shown clues")
+            })
+
+            socket.on('start host countdown', () => {
+                console.log("starting host countdown")
+                io.emit('io starts host countdown')
             })
 
 
