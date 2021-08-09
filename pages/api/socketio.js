@@ -18,6 +18,7 @@ const ioHandler = (req, res) => {
         let allowedBuzzin = [true, true, true];
         let playerNames = ['(P1)', '(P2)', '(P3)', '(Host)']
         let shownClues = {};
+        let clueList = {};
 
         io.on('connection', socket => {
             //broadcast sends to all OTHER clients
@@ -53,6 +54,7 @@ const ioHandler = (req, res) => {
                 io.emit('update names', playerNames)
                 io.emit('update players', players);
                 io.emit('io updating points', playerPoints) //this doesn't work
+                io.emit('io loading clues', clueList)
             })
 
             socket.on('player sits down', (playerName, slotNum, id) => {
@@ -67,6 +69,13 @@ const ioHandler = (req, res) => {
                 io.emit('io updating points', playerPoints)
             })
 
+
+            // LOADING CLUES
+
+            socket.on('load clues', newClueList => {
+                io.emit('io loading clues', newClueList)
+                clueList = newClueList;
+            })
 
 
             // CLUE LOGIC
@@ -85,8 +94,11 @@ const ioHandler = (req, res) => {
             })
 
             socket.on('get initial clue status', () => {
-                io.emit('io sends clue status', shownClues)
-                console.log("send out shown clues")
+                console.log("'get initial clue status")
+                console.log(clueList)
+                // send only to the client that just connected
+                socket.emit('io sends clue status', shownClues)
+                socket.emit('io loading clues', clueList)
             })
 
             socket.on('start host countdown', () => {
@@ -121,13 +133,13 @@ const ioHandler = (req, res) => {
                 buzzedPlayers = [];
             })
 
-            socket.on('clue answered', (key) => {
-                if (key === ',') {
+            socket.on('clue answered', (correct) => {
+                if (correct) {
+                    playerPoints[activePlayer] += currentCluePoints
+                } else {
                     playerPoints[activePlayer] -= currentCluePoints
                     io.emit('io allowing buzz ins')
                     allowedBuzzin[activePlayer] = false;
-                } else {
-                    playerPoints[activePlayer] += currentCluePoints
                 }
                 io.emit('io updating points', playerPoints)
                 activePlayer = null;

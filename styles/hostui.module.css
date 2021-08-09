@@ -1,0 +1,24 @@
+.answers {
+    display: flex;
+}
+
+.answers > button {
+    margin: 10px;
+    height: 100px;
+    width: 100px;
+    background-color: rgb(119, 215, 228)
+}
+
+.correct {
+    color: green;
+    font-weight: 700;
+    font-size: 70px;
+}
+
+.incorrect {
+    font-size: 55px;
+}
+
+.cluecontrols {
+    
+}

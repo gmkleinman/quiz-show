@@ -39,7 +39,7 @@ const Host = (props) => {
             return styles.hosttimer
         }
     }
-    
+
     return (
         <div className={styles.playercontainer}>
             <div className={styles.topbar}>
@@ -51,7 +51,6 @@ const Host = (props) => {
                 </div>
             </div>
             <div className={styles.hostitems}>
-
                 {playerSitting || players[slotNum]
                     ?
                     null

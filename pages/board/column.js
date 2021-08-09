@@ -4,10 +4,10 @@ import styles from '../../styles/board.module.css'
 import { Gstate } from './socketLogic'
 
 const Column = (props) => {
-    let { round } = React.useContext(Gstate)
+    let { round, clueList } = React.useContext(Gstate)
     let id = props.id;
-    let category = props.category;
-    
+    let num = props.num * round;
+
     let values;
     const setPoints = () => {
         if (round === 1) {
@@ -20,15 +20,36 @@ const Column = (props) => {
 
     return (
         <div className={styles.column}>
-            <div className={styles.header}>{category}</div>
-            {setPoints().map((points, i) => {
-                return (
-                    <Cell
-                        points={points}
-                        key={`round_${round}_${id}_row_${i}`}
-                        id={`${id}_row_${i}`}
-                    />)
-            })}
+            {clueList && clueList[num]
+                ?
+                <>
+                    <div className={styles.header}>
+                        {clueList[num][0]}
+                    </div>
+                    {setPoints().map((points, i) => {
+                        return (
+                            <Cell
+                                points={points}
+                                key={`round_${round}_${id}_row_${i}`}
+                                id={`${id}_row_${i}`}
+                                text={clueList[num][i + 1]}
+                            />)
+                    })}
+                </>
+                :
+                <>
+                    <div className={styles.header}>
+                    </div>
+                    {setPoints().map((i) => {
+                        return (
+                            <Cell
+                                points={''}
+                                key={`round_${round}_${id}_row_${i}`}
+                                id={`${id}_row_${i}`}
+                            />)
+                    })}
+                </>
+            }
 
         </div>
     )

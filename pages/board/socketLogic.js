@@ -3,6 +3,9 @@ import Board from './board'
 import React from 'react'
 import PlayersUI from '../playerui/players_ui'
 import styles from '../../styles/board.module.css'
+import styles2 from '../../styles/hostui.module.css'
+import NewWindow from 'react-new-window'
+import HostUI from '../nongame/hostui'
 
 export const Gstate = React.createContext();
 
@@ -22,6 +25,7 @@ class SocketLogic extends React.Component {
             playerNames: [],
             playerSitting: false,
             round: 1,
+            clueList: {},
         }
     }
 
@@ -105,6 +109,12 @@ class SocketLogic extends React.Component {
                         round: newRound,
                     })
                 })
+
+                this.state.socket.on('io loading clues', (clueList) => {
+                    this.setState({
+                        clueList,
+                    })
+                })
             })
         }
 
@@ -125,12 +135,12 @@ class SocketLogic extends React.Component {
                     this.state.socket.emit('allow buzz ins')
                 } else if (e.key === 'm') {
                     this.state.socket.emit('select buzz in')
-                } else if (e.key === ',' || e.key === '.') {
-                    this.state.socket.emit('clue answered', e.key)
-                } else if (e.key === 'r') {
-                    this.state.socket.emit('round change')
                 } else if (e.key === 'y') {
                     this.state.socket.emit('start host countdown')
+                } else if (e.key === ',') {
+                    this.state.socket.emit('clue answered', false)
+                } else if (e.key === '.') {
+                    this.state.socket.emit('clue answered', true)
                 }
             }
         })
@@ -159,25 +169,36 @@ class SocketLogic extends React.Component {
     render() {
         return (
             <div className={styles.socketcontainer}>
-                {this.state.denyEntry
-                    ? <div className={styles.usercount}>
-                        <div>
-                            Users: {this.state.userCount}
+                <Gstate.Provider value={this.state}>
+                    {this.state.denyEntry
+                        ?
+                        <div className={styles.usercount}>
+                            <div>
+                                Users: {this.state.userCount}
+                            </div>
+                            <div>
+                                Enter Name: <input value={this.state.playerName}
+                                    onChange={(e) => { this.setPlayerName(e) }} />
+                                <button onClick={() => this.enterGame()}>
+                                    Click to Enter
+                                </button>
+
+                            </div>
                         </div>
-                        <div>
-                            Enter Name: <input value={this.state.playerName}
-                                onChange={(e) => { this.setPlayerName(e) }} />
-                            <button onClick={() => this.enterGame()}>
-                                Click to Enter
-                            </button>
+                        :
+                        <div className={styles.gamecontainer}>
+                            <NewWindow
+                                title={'Host UI'}
+                                features={{ height: 300, width: 300 }}
+                            >
+                                <HostUI />
+                            </NewWindow>
+                            <Board />
+                            <PlayersUI />
+
                         </div>
-                    </div>
-                    :
-                    <Gstate.Provider value={this.state}>
-                        <Board />
-                        <PlayersUI />
-                    </Gstate.Provider>
-                }
+                    }
+                </Gstate.Provider>
             </div>
         )
     }

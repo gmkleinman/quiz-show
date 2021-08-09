@@ -15,6 +15,7 @@ const Cell = (props) => {
     let { socket, round, undo } = React.useContext(Gstate)
     let points = props.points
     let id = props.id
+    let text = props.text;
 
     useEffect(() => {
         socket.on("send clue to clients", (clickedid, hideClue) => {
@@ -107,7 +108,7 @@ const Cell = (props) => {
                     showPoints ?
                         (<div className={styles.points}>{points}</div>)
                         : (<div className={clueClasses}>
-                            ALLIE IS A CLUE IN THIS GAME BECAUSE SHE IS MY FAVORITE AND I LOVE HER AND I DON'T KNOW HOW LONG THESE CLUES USUALLY ARE
+                            {text}
                         </div>)
                 }
             </div>
