@@ -75,15 +75,13 @@
 }
 
 .sit {
-    border: none;
     color: white;
     background: rgb(25, 124, 0);
     font-size: 30px;
     height: 80px;
     width: 100px;
-    margin-top: 60px;
+    margin-top: 100px;
     cursor:pointer;
-    box-shadow: 2px 2px rgb(159, 255, 172);
 }
 
 .timeractive {
@@ -106,14 +104,13 @@
 }
 
 .hostbutton {
-    border: none;
     color: white;
     background: rgb(25, 124, 0);
     font-size: 30px;
     height: 80px;
     width: 100px;
     cursor:pointer;
-    box-shadow: 2px 2px rgb(98, 90, 212);
+    margin-top: 50px;
 }
 
 .hosttimeractive {

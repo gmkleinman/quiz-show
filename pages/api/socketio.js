@@ -58,10 +58,7 @@ const ioHandler = (req, res) => {
             })
 
             socket.on('player sits down', (playerName, slotNum, id) => {
-                console.log("sitting; name, slotnum, id")
-                console.log(playerName)
-                console.log(slotNum)
-                console.log(id)
+                console.log("sitting")
                 playerNames[slotNum] = playerName;
                 players[slotNum] = id;
                 io.emit('update names', playerNames)
@@ -95,7 +92,6 @@ const ioHandler = (req, res) => {
 
             socket.on('get initial clue status', () => {
                 console.log("'get initial clue status")
-                console.log(clueList)
                 // send only to the client that just connected
                 socket.emit('io sends clue status', shownClues)
                 socket.emit('io loading clues', clueList)
@@ -144,6 +140,19 @@ const ioHandler = (req, res) => {
                 io.emit('io updating points', playerPoints)
                 activePlayer = null;
                 console.log("clue answered")
+            })
+
+
+            // HOST OVERRIDES
+            socket.on('set score override', (playerNum, score) => {
+                console.log("overriding score")
+                playerPoints[playerNum] = score;
+                io.emit('io updating points', playerPoints);
+            })
+
+            socket.on('add bonus clue points', (playerNum, score) => {
+                playerPoints[playerNum] += score;
+                io.emit('io updating points', playerPoints);
             })
 
 

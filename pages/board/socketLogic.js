@@ -3,7 +3,6 @@ import Board from './board'
 import React from 'react'
 import PlayersUI from '../playerui/players_ui'
 import styles from '../../styles/board.module.css'
-import styles2 from '../../styles/hostui.module.css'
 import NewWindow from 'react-new-window'
 import HostUI from '../nongame/hostui'
 
@@ -153,7 +152,6 @@ class SocketLogic extends React.Component {
     }
 
     setPlayerName(e) {
-        console.log(e.target.value)
         this.setState({
             playerName: e.target.value
         })
@@ -189,7 +187,7 @@ class SocketLogic extends React.Component {
                         <div className={styles.gamecontainer}>
                             <NewWindow
                                 title={'Host UI'}
-                                features={{ height: 300, width: 300 }}
+                                features={{ height: 700, width: 650 }}
                             >
                                 <HostUI />
                             </NewWindow>

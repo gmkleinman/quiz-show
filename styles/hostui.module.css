@@ -1,8 +1,30 @@
-.answers {
+.hostuicontainer {
     display: flex;
 }
 
-.answers > button {
+.hostuicontainer button {
+    cursor:pointer;
+}
+
+.divider {
+    border-left: 4px black solid;
+    margin: 25px;
+}
+
+.commoncontainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 15px;
+    margin: 15px;
+    border-bottom: rgb(0, 0, 0) solid 4px;
+}
+
+.buttoncontainer {
+    display: flex;
+}
+
+.buttoncontainer > button {
     margin: 10px;
     height: 100px;
     width: 100px;
@@ -19,6 +41,72 @@
     font-size: 55px;
 }
 
-.cluecontrols {
-    
+.hotkeys {
+    font-size: 20px;
+    color: white;
+}
+
+.randombutton {
+    margin: 10px;
+    height: 100px;
+    width: 130px;
+    font-size: 50px;
+    background-color: rgb(119, 215, 228)
+}
+
+.clueloadercontainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 15px;
+    margin: 15px;
+    border-bottom: rgb(0, 0, 0) solid 4px;
+    border-top: rgb(0, 0, 0) solid 4px;
+}
+
+.playerscorechanger {
+    margin: 15px;
+}
+
+.scorechanger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 15px;
+    font-size: 24px;
+}
+
+.scoreinput {
+    margin: 5px;
+    border: rgb(255, 255, 255) solid 2px;
+    width: 140px;
+    font-size: 24px;
+}
+
+.namescorechanger {
+    margin: 5px;
+}
+
+.setbutton {
+    background-color: rgb(49, 73, 207);
+}
+
+.addbutton {
+    background-color: rgb(26, 170, 34);
+}
+
+.subtractbutton {
+    background-color: rgb(177, 17, 49);
+}
+
+.pointsbuttons > button {
+    height: 30px;
+    width: 40px;
+    font-size: 22px;
+    margin: 5px;
+}
+
+.kickbutton {
+    background-color: rgba(255, 255, 2, 0.863);
+    margin-right: 5px;
 }

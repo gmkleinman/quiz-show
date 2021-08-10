@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Gstate } from '../board/socketLogic'
+import styles from '../../styles/hostui.module.css'
+
 
 const ClueLoader = (props) => {
     let { socket } = React.useContext(Gstate)
@@ -27,14 +29,16 @@ const ClueLoader = (props) => {
     }
 
     return (
-        <div>
-            <input
-                type='password'
-                onChange={(e) => { handleInput(e) }}
-            />
-            <button onClick={loadClues}>
-                Load Clues
-            </button>
+        <div className={styles.clueloadercontainer}>
+            <div>
+                <input
+                    type='password'
+                    onChange={(e) => { handleInput(e) }}
+                />
+                <button onClick={loadClues}>
+                    Load Clues
+                </button>
+            </div>
         </div>
     )
 }
