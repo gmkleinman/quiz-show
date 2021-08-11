@@ -101,11 +101,9 @@ class SocketLogic extends React.Component {
                     })
                 })
 
-                this.state.socket.on('io changing round', () => {
-                    let newRound;
-                    this.state.round === 1 ? newRound = 2 : newRound = 1;
+                this.state.socket.on('io changing round', (round) => {
                     this.setState({
-                        round: newRound,
+                        round,
                     })
                 })
 
@@ -114,10 +112,12 @@ class SocketLogic extends React.Component {
                         clueList,
                     })
                 })
+
             })
         }
 
         window.addEventListener('keydown', (e) => {
+            console.log(this.state);
             // TODO: this runs every render; prefer only runs once
             if (!this.state.denyEntry) {
                 if (e.key === 'Control') {

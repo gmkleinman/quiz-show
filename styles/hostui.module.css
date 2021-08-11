@@ -31,6 +31,17 @@
     background-color: rgb(119, 215, 228)
 }
 
+.rarebuttons {
+    display: flex;
+}
+
+.rarebuttons > button {
+    margin: 10px;
+    height: 60px;
+    width: 70px;
+    background-color: rgb(119, 215, 228) 
+}
+
 .correct {
     color: green;
     font-weight: 700;
@@ -109,4 +120,8 @@
 .kickbutton {
     background-color: rgba(255, 255, 2, 0.863);
     margin-right: 5px;
+}
+
+.rarebuttondisabled {
+    opacity: 0.4;
 }

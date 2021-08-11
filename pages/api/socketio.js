@@ -20,6 +20,7 @@ const ioHandler = (req, res) => {
         let shownClues = {};
         let clueList = {};
         let clueCount = 0;
+        let round = 1;
 
         io.on('connection', socket => {
             //broadcast sends to all OTHER clients
@@ -51,7 +52,7 @@ const ioHandler = (req, res) => {
             socket.on('kick player', (playerNum) => {
                 let kickedID = players[playerNum]
                 io.sockets.sockets.forEach((iosocket) => {
-                    if(iosocket.id === kickedID)
+                    if (iosocket.id === kickedID)
                         iosocket.disconnect(true);
                 });
             })
@@ -64,6 +65,7 @@ const ioHandler = (req, res) => {
                 io.emit('update players', players);
                 io.emit('io updating points', playerPoints) //this doesn't work
                 io.emit('io loading clues', clueList)
+                io.emit('io changing round', round)
             })
 
             socket.on('player sits down', (playerName, slotNum, id) => {
@@ -73,6 +75,7 @@ const ioHandler = (req, res) => {
                 io.emit('update names', playerNames)
                 io.emit('update players', players);
                 io.emit('io updating points', playerPoints)
+                io.emit('io changing round', round)
             })
 
 
@@ -173,6 +176,17 @@ const ioHandler = (req, res) => {
                 console.log("clue answered")
             })
 
+            // CHANGE ROUND
+            socket.on('round change', () => {
+                shownClues = {};
+                if (round === 1) {
+                    round = 2;
+                } else {
+                    round = 1;
+                }
+                io.emit('io changing round', round)
+                console.log("io changing round")
+            })
 
             // HOST OVERRIDES
             socket.on('set score override', (playerNum, score) => {
@@ -186,12 +200,19 @@ const ioHandler = (req, res) => {
                 io.emit('io updating points', playerPoints);
             })
 
-
-            // CHANGE ROUND
-            socket.on('round change', () => {
+            socket.on('reset game', () => {
+                console.log("resetting game")
+                playerPoints = [0, 0, 0]
                 shownClues = {};
-                io.emit('io changing round')
-                console.log("io changing round")
+                clueList = {};
+                clueCount = 0;
+                round = 1;
+
+                io.emit('io updating points', playerPoints);
+                io.emit('io sends clue status', shownClues)
+                io.emit('io loading clues', clueList)
+                io.emit('io update clue count', clueCount)
+                io.emit('io changing round', round)
             })
         })
 
