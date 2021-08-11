@@ -9,26 +9,31 @@ const ScoreChanger = (props) => {
     const [inputs, setInputs] = useState({})
 
     const handleInputChange = (e) => {
-        setInputs({ [e.target.name]: parseInt(e.target.value) })
+        let newInputs = Object.assign(inputs);
+        newInputs[e.target.name] = e.target.value;
+        setInputs(newInputs)
     }
 
-    const setScore = (playerNum) => {
-        socket.emit('set score override', playerNum, inputs[playerNum])
-    }
+    const clickHandler = (playerNum, button) => {
+        let points = inputs[playerNum];
+        if (button === '-') points *= -1;
 
-    const addPoints = (playerNum) => {
-        socket.emit('add bonus clue points', playerNum, inputs[playerNum])
-    }
+        if (button === '=') {
+            socket.emit('set score override', playerNum, points)
+        } else {
+            socket.emit('add bonus clue points', playerNum, points)
+        }
 
-    const subtractPoints = (playerNum) => {
-        socket.emit('add bonus clue points', playerNum, -1 * inputs[playerNum])
+        let newInputs = Object.assign(inputs);
+        newInputs[playerNum] = '';
+        setInputs(newInputs)
     }
 
     return (
         <div className={styles.scorechanger}>
             {[0, 1, 2].map((i) => {
                 return (
-                    <div className={styles.playerscorechanger}>
+                    <div className={styles.playerscorechanger} key={i}>
                         <div className={styles.namescorechanger}>
                             <button className={styles.kickbutton}>
                                 👢
@@ -39,15 +44,16 @@ const ScoreChanger = (props) => {
                             name={i}
                             onChange={(e) => { handleInputChange(e) }}
                             className={styles.scoreinput}
+                            value={inputs[i]}
                         />
                         <div className={styles.pointsbuttons}>
-                            <button className={styles.setbutton} onClick={() => setScore(i)}>
+                            <button className={styles.setbutton} onClick={() => clickHandler(i, '=')}>
                                 =
                             </button>
-                            <button className={styles.addbutton} onClick={() => addPoints(i)}>
+                            <button className={styles.addbutton} onClick={() => clickHandler(i, '+')}>
                                 +
                             </button>
-                            <button className={styles.subtractbutton} onClick={() => subtractPoints(i)}>
+                            <button className={styles.subtractbutton} onClick={() => clickHandler(i, '-')}>
                                 -
                             </button>
                         </div>

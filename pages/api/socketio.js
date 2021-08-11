@@ -19,6 +19,7 @@ const ioHandler = (req, res) => {
         let playerNames = ['(P1)', '(P2)', '(P3)', '(Host)']
         let shownClues = {};
         let clueList = {};
+        let clueCount = 0;
 
         io.on('connection', socket => {
             //broadcast sends to all OTHER clients
@@ -69,9 +70,14 @@ const ioHandler = (req, res) => {
 
             // LOADING CLUES
 
-            socket.on('load clues', newClueList => {
+            socket.on('load clues', (newClueList, clueArray) => {
                 io.emit('io loading clues', newClueList)
                 clueList = newClueList;
+                clueCount = 0;
+                clueArray.forEach(clue => {
+                    if(clue != '') clueCount++;
+                });
+                io.emit('io update clue count', clueCount)
             })
 
 

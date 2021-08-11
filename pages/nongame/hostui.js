@@ -11,13 +11,11 @@ const HostUI = (props) => {
                 <ClueLoader />
                 <PanelButtons />
             </div>
-            <div className={styles.divider}>
-            </div>
+            <div className={styles.divider}/>
             <div>
                 <ScoreChanger />
             </div>
         </div>
-
     )
 }
 
