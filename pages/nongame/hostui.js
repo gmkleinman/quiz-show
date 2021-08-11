@@ -2,7 +2,7 @@ import ClueLoader from "./clueloader";
 import React from 'react'
 import PanelButtons from "./panelbuttons";
 import styles from '../../styles/hostui.module.css'
-import ScoreChanger from "./scorechanger";
+import PlayerHandler from "./playerhandler";
 
 const HostUI = (props) => {
     return (
@@ -13,7 +13,7 @@ const HostUI = (props) => {
             </div>
             <div className={styles.divider}/>
             <div>
-                <ScoreChanger />
+                <PlayerHandler />
             </div>
         </div>
     )

@@ -68,7 +68,7 @@
     margin: 15px;
 }
 
-.scorechanger {
+.playerhandler {
     display: flex;
     flex-direction: column;
     justify-content: center;

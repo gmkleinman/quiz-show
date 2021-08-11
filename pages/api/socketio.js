@@ -48,6 +48,14 @@ const ioHandler = (req, res) => {
                 io.emit('update user count', io.engine.clientsCount);
             })
 
+            socket.on('kick player', (playerNum) => {
+                let kickedID = players[playerNum]
+                io.sockets.sockets.forEach((iosocket) => {
+                    if(iosocket.id === kickedID)
+                        iosocket.disconnect(true);
+                });
+            })
+
 
             // PLAYER ENTRY
 
