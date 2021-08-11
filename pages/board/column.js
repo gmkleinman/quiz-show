@@ -1,14 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Cell from './cell'
 import styles from '../../styles/board.module.css'
 import { Gstate } from './socketLogic'
 
 const Column = (props) => {
-    let { round, clueList } = React.useContext(Gstate)
+    let { round, clueList, socket } = React.useContext(Gstate)
+    const [title, setTitle] = useState('');
     let id = props.id;
     let num = props.num * round;
-
     let values;
+
+    useEffect(() => {
+        socket.on('io sends clear category', categoryNum => {
+            // element 7 is the column # in the id
+            // might go back and fix this to not be dumb and hardcoded
+            if (categoryNum === id[7]) setTitle('')
+        })
+    }, [socket])
+
+    useEffect(() => {
+        if (clueList && clueList[num]) setTitle(clueList[num][0])
+    }, [clueList])
+
     const setPoints = () => {
         if (round === 1) {
             values = [200, 400, 600, 800, 1000]
@@ -24,7 +37,7 @@ const Column = (props) => {
                 ?
                 <>
                     <div className={styles.header}>
-                        {clueList[num][0]}
+                        {title}
                     </div>
                     {setPoints().map((points, i) => {
                         return (
@@ -38,6 +51,7 @@ const Column = (props) => {
                 </>
                 :
                 <>
+                    {/* make a board with blank cells if clues haven't been loaded */}
                     <div className={styles.header}>
                     </div>
                     {setPoints().map((i) => {

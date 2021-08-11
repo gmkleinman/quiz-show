@@ -71,11 +71,12 @@ const ioHandler = (req, res) => {
             // LOADING CLUES
 
             socket.on('load clues', (newClueList, clueArray) => {
+                console.log("loading clues")
                 io.emit('io loading clues', newClueList)
                 clueList = newClueList;
                 clueCount = 0;
                 clueArray.forEach(clue => {
-                    if(clue != '') clueCount++;
+                    if (clue != '') clueCount++;
                 });
                 io.emit('io update clue count', clueCount)
             })
@@ -90,7 +91,23 @@ const ioHandler = (req, res) => {
                 shownClues[id] = true;
                 currentCluePoints = points;
                 allowedBuzzin = [true, true, true]
+                clearCategory(id)
             })
+
+            const clearCategory = (id) => {
+                // element 7 is the column # in the id
+                // might go back and fix this to not be dumb and hardcoded
+                let categoryNum = id[7];
+                let seenClues = Object.keys(shownClues);
+                let count = 0;
+                seenClues.forEach(seenClue => {
+                    if (parseInt(seenClue[7]) === parseInt(categoryNum)) {
+                        count++;
+                    }
+                });
+                console.log(count)
+                if (count >= 5) io.emit('io sends clear category', categoryNum)
+            }
 
             socket.on("clue reset", (id) => {
                 io.emit("io sends clue reset", id);
