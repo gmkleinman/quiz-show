@@ -7,14 +7,21 @@ const Column = (props) => {
     let { round, clueList, socket } = React.useContext(Gstate)
     const [title, setTitle] = useState('');
     let id = props.id;
-    let num = props.num + (6 * (round-1));
+    let num = props.num + (6 * (round - 1));
     let values;
 
     useEffect(() => {
         socket.on('io sends clear category', categoryNum => {
-            // element 7 is the column # in the id
             // might go back and fix this to not be dumb and hardcoded
-            if (categoryNum === id[7]) setTitle('')
+            if (id.length === 14) {
+                if (categoryNum === parseInt(id[7])) {
+                    setTitle('');
+                }
+            } else {
+                if (categoryNum === parseInt(id[7] + id[8])) {
+                    setTitle('');
+                }
+            }
         })
     }, [socket])
 
@@ -44,7 +51,7 @@ const Column = (props) => {
                             <Cell
                                 points={points}
                                 key={`round_${round}_${id}_row_${i}`}
-                                id={`column_${num-1}_row_${i}`}
+                                id={`column_${num - 1}_row_${i}`}
                                 text={clueList[num][i + 1]}
                             />)
                     })}

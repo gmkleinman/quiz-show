@@ -112,7 +112,6 @@ const ioHandler = (req, res) => {
                 let firstCol = 0;
                 let i = 0;
                 while (i < 2) {
-                    console.log("while loop")
                     col = Math.floor(Math.random() * 6) + 7; // 7 thru 12
                     row = Math.floor(Math.random() * 3) + 3; // 3, 4, 5
                     tag = col.toString() + row.toString();
@@ -133,26 +132,41 @@ const ioHandler = (req, res) => {
             // CLUE LOGIC
 
             // keeping track of clues will help deal with disconnect glitches
+            // really though, this row/col thing is terrible and should be refactored
+            // length of 15 means two-digit columns
             socket.on('clue clicked', (id, points, shown) => {
                 //check for bonus clue
-                let col = parseInt(id[7]) + 1;
-                let row = parseInt(id[13]) + 1;
+                let col, row;
+                if (id.length === 15) {
+                    col = parseInt(id[7] + id[8]) + 1;
+                    row = parseInt(id[14]) + 1;
+                } else {
+                    col = parseInt(id[7]) + 1;
+                    row = parseInt(id[13]) + 1;
+                }
+
                 let tag = col.toString() + row.toString();
+                console.log("here's my tag")
+                console.log(tag)
+                console.log("here's bonus clues at taa")
                 let bonusClue = bonusClues[tag];
-                console.log("is bonus?")
                 console.log(bonusClue)
-                console.log(id)
                 if (bonusClue) {
                     if (bonusStep === 0) {
-                        console.log("step 0")
                         io.emit('send clue to clients', id, shown, true)
                     } else if (bonusStep === 1) {
-                        console.log("step 1")
-                        // clueList at col at (row or row +1)
-                        clueList[tag[0]][tag[1]] = bonusClue
+                        console.log("bonus step 1")
+                        if(id.length === 14) {
+                            clueList[col][row] = bonusClue
+                            console.log("here")
+                        } else {
+                            clueList[col][row] = bonusClue
+                            // clueList[tag[0]+tag[1]][tag[2]] = bonusClue
+                            console.log("here")
+                        
+                        }
                         io.emit('io loading clues', clueList)
                     } else if (bonusStep === 2) {
-                        console.log("step 2")
                         io.emit('send clue to clients', id, shown)
                         shownClues[id] = true;
                         clearCategory(id)
@@ -164,23 +178,27 @@ const ioHandler = (req, res) => {
                     shownClues[id] = true;
                     currentCluePoints = points;
                     allowedBuzzin = [true, true, true]
-                    clearCategory(id)
+                    clearCategory(col)
                 }
             })
 
-            const clearCategory = (id) => {
-                // element 7 is the column # in the id
-                // might go back and fix this to not be dumb and hardcoded
-                let categoryNum = id[7];
+            const clearCategory = (col, id) => {
+                // more dumb stuff I have to deal with because of the other dumb stuff
+                let seenCol;
                 let seenClues = Object.keys(shownClues);
                 let count = 0;
                 seenClues.forEach(seenClue => {
-                    if (parseInt(seenClue[7]) === parseInt(categoryNum)) {
+                    if (seenClue.length === 15) {
+                        seenCol = parseInt(seenClue[7] + seenClue[8]);
+                    } else {
+                        seenCol = parseInt(seenClue[7]);
+                    }
+
+                    if (seenCol === col) {
                         count++;
                     }
                 });
-                console.log(count)
-                if (count >= 5) io.emit('io sends clear category', categoryNum)
+                if (count >= 5) io.emit('io sends clear category', col)
             }
 
             socket.on("clue reset", (id) => {
@@ -207,7 +225,6 @@ const ioHandler = (req, res) => {
             })
 
             socket.on('disable buzz ins', () => {
-                console.log("disabled buzz ins")
                 io.emit('io disable buzz ins')
             })
 
