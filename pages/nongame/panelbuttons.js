@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styles from '../../styles/hostui.module.css'
 import { Gstate } from '../board/socketLogic';
 
-
 const PanelButtons = (props) => {
     let { socket } = React.useContext(Gstate);
     const [status, setStatus] = useState(true);

@@ -7,7 +7,7 @@ const Column = (props) => {
     let { round, clueList, socket } = React.useContext(Gstate)
     const [title, setTitle] = useState('');
     let id = props.id;
-    let num = props.num * round;
+    let num = props.num + (6 * (round-1));
     let values;
 
     useEffect(() => {
@@ -44,7 +44,7 @@ const Column = (props) => {
                             <Cell
                                 points={points}
                                 key={`round_${round}_${id}_row_${i}`}
-                                id={`${id}_row_${i}`}
+                                id={`column_${num-1}_row_${i}`}
                                 text={clueList[num][i + 1]}
                             />)
                     })}

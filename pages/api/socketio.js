@@ -16,11 +16,13 @@ const ioHandler = (req, res) => {
         let activePlayer = null;
         let playerPoints = [0, 0, 0];
         let allowedBuzzin = [true, true, true];
-        let playerNames = ['(P1)', '(P2)', '(P3)', '(Host)']
+        let playerNames = ['(P1)', '(P2)', '(P3)', '(Host)'];
         let shownClues = {};
         let clueList = {};
         let clueCount = 0;
         let round = 1;
+        let bonusStep = 0;
+        let bonusClues = {};
 
         io.on('connection', socket => {
             //broadcast sends to all OTHER clients
@@ -83,26 +85,87 @@ const ioHandler = (req, res) => {
 
             socket.on('load clues', (newClueList, clueArray) => {
                 console.log("loading clues")
-                io.emit('io loading clues', newClueList)
                 clueList = newClueList;
                 clueCount = 0;
                 clueArray.forEach(clue => {
                     if (clue != '') clueCount++;
                 });
+
                 io.emit('io update clue count', clueCount)
+                setBonusClues();
+                console.log('bonus clues:')
+                console.log(bonusClues)
+                io.emit('io loading clues', clueList)
             })
+
+            const setBonusClues = () => {
+                // randomize from all categories but only bottom 3 rows
+                // first round, one bonus
+                //are my columns wrong...? do we ever get the first column?
+                let col = Math.floor(Math.random() * 6) + 1; //1 thru 6
+                let row = Math.floor(Math.random() * 3) + 3; // 3, 4, 5
+                let tag = col.toString() + row.toString();
+                bonusClues[tag] = clueList[col][row];
+                clueList[col][row] = 'bonus clue!';
+
+                // second round, two bonuses
+                let firstCol = 0;
+                let i = 0;
+                while (i < 2) {
+                    console.log("while loop")
+                    col = Math.floor(Math.random() * 6) + 7; // 7 thru 12
+                    row = Math.floor(Math.random() * 3) + 3; // 3, 4, 5
+                    tag = col.toString() + row.toString();
+
+                    if (i === 0) {
+                        firstCol = col;
+                    }
+
+                    if (firstCol != col || i === 0) {
+                        bonusClues[tag] = clueList[col][row];
+                        clueList[col][row] = 'bonus clue!';
+                        i++;
+                    }
+                }
+            }
 
 
             // CLUE LOGIC
 
             // keeping track of clues will help deal with disconnect glitches
             socket.on('clue clicked', (id, points, shown) => {
-                io.emit('send clue to clients', id, shown)
-                io.emit('io allowing buzz ins')
-                shownClues[id] = true;
-                currentCluePoints = points;
-                allowedBuzzin = [true, true, true]
-                clearCategory(id)
+                //check for bonus clue
+                let col = parseInt(id[7]) + 1;
+                let row = parseInt(id[13]) + 1;
+                let tag = col.toString() + row.toString();
+                let bonusClue = bonusClues[tag];
+                console.log("is bonus?")
+                console.log(bonusClue)
+                console.log(id)
+                if (bonusClue) {
+                    if (bonusStep === 0) {
+                        console.log("step 0")
+                        io.emit('send clue to clients', id, shown, true)
+                    } else if (bonusStep === 1) {
+                        console.log("step 1")
+                        // clueList at col at (row or row +1)
+                        clueList[tag[0]][tag[1]] = bonusClue
+                        io.emit('io loading clues', clueList)
+                    } else if (bonusStep === 2) {
+                        console.log("step 2")
+                        io.emit('send clue to clients', id, shown)
+                        shownClues[id] = true;
+                        clearCategory(id)
+                    }
+                    bonusStep = (bonusStep + 1) % 3
+                } else {
+                    io.emit('send clue to clients', id, shown)
+                    io.emit('io allowing buzz ins')
+                    shownClues[id] = true;
+                    currentCluePoints = points;
+                    allowedBuzzin = [true, true, true]
+                    clearCategory(id)
+                }
             })
 
             const clearCategory = (id) => {
@@ -125,7 +188,6 @@ const ioHandler = (req, res) => {
             })
 
             socket.on('get initial clue status', () => {
-                console.log("'get initial clue status")
                 // send only to the client that just connected
                 socket.emit('io sends clue status', shownClues)
                 socket.emit('io loading clues', clueList)
@@ -207,6 +269,8 @@ const ioHandler = (req, res) => {
                 clueList = {};
                 clueCount = 0;
                 round = 1;
+                bonusClues = {};
+                bonusStep = 0;
 
                 io.emit('io updating points', playerPoints);
                 io.emit('io sends clue status', shownClues)

@@ -9,36 +9,43 @@ const Cell = (props) => {
     const [clueClasses, setClueClasses] = useState(styles.clue);
     const [top, setTop] = useState(0);
     const [left, setLeft] = useState(0);
-    const [cooldown, setCooldown] = useState(false);
     const [origin, setOrigin] = useState([0, 0])
     const [gotOrigin, setGotOrigin] = useState(false)
+
     let { socket, round, undo } = React.useContext(Gstate)
     let points = props.points
     let id = props.id
     let text = props.text;
 
+    const hideClueCleanup = () => {
+        setClasses(styles.seenclue)
+        setShowPoints(true)
+        socket.emit('disable buzz ins')
+    }
+
+    const showClue = () => {
+        setClasses(styles.active)
+        setShowPoints(false)
+        setShown(true)
+        setClueClasses(styles.clue)
+    }
+
     useEffect(() => {
-        socket.on("send clue to clients", (clickedid, hideClue) => {
-            if (!cooldown && id === clickedid) {
-                setCooldown(true);
-                if (!hideClue) {
-                    setClasses(styles.active)
-                    setShowPoints(false)
-                    setShown(true)
-                    setClueClasses(styles.clue)
+        socket.on("send clue to clients", (clickedid, hideClue, bonus) => {
+            if (id === clickedid) {
+                if (bonus) {
+                    showClue();
                 } else {
-                    setClasses(styles.seenclue)
-                    setShowPoints(true)
-                    socket.emit('disable buzz ins')
+                    if (!hideClue) {
+                        showClue();
+                    } else {
+                        hideClueCleanup();
+                    }
                 }
 
                 setTimeout(() => {
                     setClueClasses(styles.clue + ' ' + styles.activeclue)
                 }, 1);
-
-                setTimeout(() => {
-                    setCooldown(false);
-                }, 200);
             }
         })
 
