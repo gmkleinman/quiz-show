@@ -11,42 +11,50 @@ const PanelButtons = (props) => {
     }
 
     const incorrect = () => {
-        socket.emit('clue answered', false)
+        socket.emit('clue answered', false);
     }
 
     const countdown = () => {
-        socket.emit('start host countdown')
+        socket.emit('start host countdown');
     }
 
     const selectPlayer = () => {
-        socket.emit('select buzz in')
+        socket.emit('select buzz in');
     }
 
     const allowBuzz = () => {
-        socket.emit('allow buzz ins')
-        setStatus(true)
+        socket.emit('allow buzz ins');
+        setStatus(true);
     }
 
     const nextRound = () => {
-        socket.emit('round change')
-        setStatus(true)
+        socket.emit('round change');
+        setStatus(true);
     }
 
     const resetGame = () => {
-        socket.emit('reset game')
-        setStatus(true)
+        socket.emit('reset game');
+        setStatus(true);
     }
 
     const enableButtons = () => {
-        setStatus(false)
+        setStatus(false);
+        setTimeout(() => {
+            setStatus(true);
+        }, 5000)
     }
 
     const rarestyle = () => {
         if (status) {
-            return styles.rarebuttondisabled
+            return styles.rarebuttondisabled;
         } else {
-            return null
+            return null;
         }
+    }
+
+    const finalRound = () => {
+        socket.emit('final round');
+        setStatus(true);
     }
 
     return (
@@ -75,16 +83,23 @@ const PanelButtons = (props) => {
                 <button onClick={enableButtons}>
                     Click to Enable
                 </button>
-                <div className={styles.rarebuttons}>
-                    <button onClick={nextRound} disabled={status} className={rarestyle()}>
-                        Next Round
-                    </button>
-                    <button onClick={resetGame} disabled={status} className={rarestyle()}>
-                        Reset Game
-                    </button>
-                    <button onClick={allowBuzz} disabled={status} className={rarestyle()}>
-                        Force Allow Buzz-ins
-                    </button>
+                <div>
+                    <div className={styles.rarebuttons}>
+                        <button onClick={nextRound} disabled={status} className={rarestyle()}>
+                            Next Round
+                        </button>
+                        <button onClick={resetGame} disabled={status} className={rarestyle()}>
+                            Reset Game
+                        </button>
+                    </div>
+                    <div className={styles.rarebuttons}>
+                        <button onClick={allowBuzz} disabled={status} className={rarestyle()}>
+                            Force Allow Buzz-ins
+                        </button>
+                        <button onClick={finalRound} disabled={status} className={rarestyle()}>
+                            Final Round
+                        </button>
+                    </div>
                 </div>
             </div>
         </>

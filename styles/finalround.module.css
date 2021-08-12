@@ -1,0 +1,30 @@
+.finalcontainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 40px;
+    border: solid black 10px;
+    width: 1050px;
+}
+
+.finalcategory {
+    margin: 40px;
+}
+
+.finalclue {
+    text-align: center;
+    border: white 4px solid;
+    padding: 40px;
+    width: 70%;
+}
+
+.responsecontainer {
+    display: flex;
+}
+
+.responses {
+    padding: 20px;
+    margin: 20px;
+}

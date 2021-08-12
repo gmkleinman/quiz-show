@@ -267,6 +267,10 @@ const ioHandler = (req, res) => {
                 console.log("io changing round")
             })
 
+            socket.on('final round', () => {
+                io.emit('io final round');
+            })
+
             // HOST OVERRIDES
             socket.on('set score override', (playerNum, score) => {
                 console.log("overriding score")
@@ -294,6 +298,7 @@ const ioHandler = (req, res) => {
                 io.emit('io loading clues', clueList)
                 io.emit('io update clue count', clueCount)
                 io.emit('io changing round', round)
+                io.emit('io not final round')
             })
         })
 

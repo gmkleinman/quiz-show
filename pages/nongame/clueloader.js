@@ -32,7 +32,6 @@ const ClueLoader = (props) => {
                 clueList[categoryIndex].push(clue);
             }
         }
-        console.log(clues)
         socket.emit('load clues', clueList, clues)
     }
 

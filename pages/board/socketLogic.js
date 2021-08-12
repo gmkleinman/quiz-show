@@ -1,10 +1,7 @@
 import io from 'socket.io-client'
-import Board from './board'
 import React from 'react'
-import PlayersUI from '../playerui/players_ui'
 import styles from '../../styles/board.module.css'
-import NewWindow from 'react-new-window'
-import HostUI from '../nongame/hostui'
+import Game from './game'
 
 export const Gstate = React.createContext();
 
@@ -69,7 +66,6 @@ class SocketLogic extends React.Component {
                 })
 
                 this.state.socket.on('active player selected', (activePlayer) => {
-                    console.log(activePlayer)
                     this.setState({
                         activePlayer,
                         buzzedPlayers: [],
@@ -117,7 +113,6 @@ class SocketLogic extends React.Component {
         }
 
         window.addEventListener('keydown', (e) => {
-            console.log(this.state);
             // TODO: this runs every render; prefer only runs once
             if (!this.state.denyEntry) {
                 if (e.key === 'Control') {
@@ -164,6 +159,10 @@ class SocketLogic extends React.Component {
         })
     }
 
+    renderFinal() {
+
+    }
+
     render() {
         return (
             <div className={styles.socketcontainer}>
@@ -184,17 +183,7 @@ class SocketLogic extends React.Component {
                             </div>
                         </div>
                         :
-                        <div className={styles.gamecontainer}>
-                            <NewWindow
-                                title={'Host UI'}
-                                features={{ height: 700, width: 650 }}
-                            >
-                                <HostUI />
-                            </NewWindow>
-                            <Board />
-                            <PlayersUI />
-
-                        </div>
+                        <Game/> 
                     }
                 </Gstate.Provider>
             </div>
