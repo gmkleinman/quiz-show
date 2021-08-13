@@ -125,3 +125,9 @@
     width: 106%;
     height: 40px;
 }
+
+.bonustimeractive {
+    width: 0px;
+    height: 40px;
+    transition: all 6s linear;
+}

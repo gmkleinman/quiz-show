@@ -6,6 +6,7 @@ const Host = (props) => {
     let name = props.name
     let slotNum = 3;
     const [hostCountdown, setHostCountdown] = useState(false);
+    const [bonusCountdown, setBonusCountdown] = useState(false);
     let { players, playerSitting, socket, playerName } = React.useContext(Gstate)
 
     useEffect(() => {
@@ -15,6 +16,11 @@ const Host = (props) => {
 
         socket.on("send clue to clients", (clickedid, hideClue) => {
             setHostCountdown(false);
+            setBonusCountdown(false);
+        })
+
+        socket.on("io starts bonus countdown", () => {
+            setBonusCountdown(true);
         })
     })
 
@@ -35,6 +41,8 @@ const Host = (props) => {
     const updateTimer = () => {
         if (hostCountdown) {
             return styles.hosttimeractive
+        } else if (bonusCountdown) {
+            return styles.bonustimeractive
         } else {
             return styles.hosttimer
         }

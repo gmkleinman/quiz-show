@@ -7,7 +7,7 @@ const FinalRound = () => {
                 FINAL CATEGORY
             </div>
             <div className={styles.finalclue}>
-            RONALD REAGAN PUT THIS SOUTH AFRICAN ON A TERRORIST WATCH LIST, FORCING HIM TO GET CLEARANCE JUST TO ENTER THE U.S. IN 2008
+                RONALD REAGAN PUT THIS SOUTH AFRICAN ON A TERRORIST WATCH LIST, FORCING HIM TO GET CLEARANCE JUST TO ENTER THE U.S. IN 2008
             </div>
             <div className={styles.responsecontainer}>
                 {[0, 1, 2].map(playerNum => {

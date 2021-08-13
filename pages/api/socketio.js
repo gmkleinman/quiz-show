@@ -216,6 +216,11 @@ const ioHandler = (req, res) => {
                 io.emit('io starts host countdown')
             })
 
+            socket.on("start bonus countdown", () => {
+                console.log("starting bonus countdown")
+                io.emit('io starts bonus countdown')
+            })
+
 
             // BUZZER LOGIC
             socket.on('allow buzz ins', () => {

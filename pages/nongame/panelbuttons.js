@@ -44,6 +44,10 @@ const PanelButtons = (props) => {
         }, 5000)
     }
 
+    const bonusCountdown = () => {
+        socket.emit('start bonus countdown');
+    }
+
     const rarestyle = () => {
         if (status) {
             return styles.rarebuttondisabled;
@@ -83,21 +87,24 @@ const PanelButtons = (props) => {
                 <button onClick={enableButtons}>
                     Click to Enable
                 </button>
-                <div>
+                <div className={styles.rarecontainer}>
                     <div className={styles.rarebuttons}>
+                        <button onClick={bonusCountdown} disabled={status} className={rarestyle()}>
+                            Bonus Timer
+                        </button>
                         <button onClick={nextRound} disabled={status} className={rarestyle()}>
                             Next Round
                         </button>
-                        <button onClick={resetGame} disabled={status} className={rarestyle()}>
-                            Reset Game
+                        <button onClick={finalRound} disabled={status} className={rarestyle()}>
+                            Final Round
                         </button>
                     </div>
                     <div className={styles.rarebuttons}>
                         <button onClick={allowBuzz} disabled={status} className={rarestyle()}>
                             Force Allow Buzz-ins
                         </button>
-                        <button onClick={finalRound} disabled={status} className={rarestyle()}>
-                            Final Round
+                        <button onClick={resetGame} disabled={status} className={rarestyle()}>
+                            Reset Game
                         </button>
                     </div>
                 </div>

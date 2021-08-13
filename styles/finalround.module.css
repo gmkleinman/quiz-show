@@ -7,6 +7,7 @@
     font-size: 40px;
     border: solid black 10px;
     width: 1050px;
+    background-color: #29302d;
 }
 
 .finalcategory {
@@ -15,9 +16,10 @@
 
 .finalclue {
     text-align: center;
-    border: white 4px solid;
+    border: black 6px solid;
     padding: 40px;
-    width: 70%;
+    width: 80%;
+    background-color: #0a4d4e;
 }
 
 .responsecontainer {
@@ -25,6 +27,10 @@
 }
 
 .responses {
+    width: 40%;
     padding: 20px;
-    margin: 20px;
+    margin: 60px;
+    font-size: 40px;
+    border: black 6px solid;
+    background-color: #0a4d4e;
 }
