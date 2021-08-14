@@ -26,7 +26,7 @@ const Game = () => {
         <div className={styles.gamecontainer}>
             <NewWindow
                 title={'Host UI'}
-                features={{ height: 750, width: 650 }}
+                features={{ height: 775, width: 1050 }}
             >
                 <HostUI />
             </NewWindow>

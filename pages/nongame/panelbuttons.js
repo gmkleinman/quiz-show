@@ -56,11 +56,6 @@ const PanelButtons = (props) => {
         }
     }
 
-    const finalRound = () => {
-        socket.emit('final round');
-        setStatus(true);
-    }
-
     return (
         <>
             <div className={styles.commoncontainer}>
@@ -95,9 +90,7 @@ const PanelButtons = (props) => {
                         <button onClick={nextRound} disabled={status} className={rarestyle()}>
                             Next Round
                         </button>
-                        <button onClick={finalRound} disabled={status} className={rarestyle()}>
-                            Final Round
-                        </button>
+
                     </div>
                     <div className={styles.rarebuttons}>
                         <button onClick={allowBuzz} disabled={status} className={rarestyle()}>

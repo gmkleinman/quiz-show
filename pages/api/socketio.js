@@ -23,6 +23,10 @@ const ioHandler = (req, res) => {
         let round = 1;
         let bonusStep = 0;
         let bonusClues = {};
+        let playerInputs = {
+            wagers: [0, 0, 0],
+            answers: ['', '', ''],            
+        }
 
         io.on('connection', socket => {
             //broadcast sends to all OTHER clients
@@ -101,14 +105,13 @@ const ioHandler = (req, res) => {
             const setBonusClues = () => {
                 // randomize from all categories but only bottom 3 rows
                 // first round, one bonus
-                //are my columns wrong...? do we ever get the first column?
                 let col = Math.floor(Math.random() * 6) + 1; //1 thru 6
                 let row = Math.floor(Math.random() * 3) + 3; // 3, 4, 5
                 let tag = col.toString() + row.toString();
                 bonusClues[tag] = clueList[col][row];
                 clueList[col][row] = 'bonus clue!';
 
-                // second round, two bonuses
+                // second round, two bonuses from different columns
                 let firstCol = 0;
                 let i = 0;
                 while (i < 2) {
@@ -304,6 +307,35 @@ const ioHandler = (req, res) => {
                 io.emit('io update clue count', clueCount)
                 io.emit('io changing round', round)
                 io.emit('io not final round')
+            })
+
+
+            // FINAL CLUE
+            // socket.on('send final answer', (answer, playerNum) => {
+            //     finalAnswers[playerNum] = answer;
+            //     io.emit('io updates answers', finalAnswers)
+            // })
+
+            // socket.on('send final wager', (wager, playerNum) => {
+            //     finalWagers[playerNum] = wager;
+            //     io.emit('io updates answers', finalWagers)
+            // })
+
+            socket.on('reveal final clue', () => {
+                console.log("reveal final clue")
+                io.emit('io reveals final clue')
+            })
+
+            socket.on('player input changed', (type, input, playerNum) => {
+                console.log("input changed");
+                console.log(type)
+                console.log(input)
+                console.log(playerNum)
+                console.log("...")
+                console.log(playerInputs[type])
+                console.log(playerInputs)
+                playerInputs[type][playerNum] = input
+                io.emit('io sends player inputs', (playerInputs))
             })
         })
 

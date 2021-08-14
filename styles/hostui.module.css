@@ -94,8 +94,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin: 15px;
-    font-size: 24px;
+    margin-top: 15px;
+    font-size: 20px;
 }
 
 .scoreinput {
@@ -106,7 +106,9 @@
 }
 
 .namescorechanger {
+    font-size: 16px;
     margin: 5px;
+    width: 175px;
 }
 
 .setbutton {
@@ -131,4 +133,25 @@
 .kickbutton {
     background-color: rgba(255, 255, 2, 0.863);
     margin-right: 5px;
+}
+
+.responsescontainer {
+    display: flex;
+    padding: 15px;
+    margin: 15px;
+    border-bottom: rgb(0, 0, 0) solid 4px;
+}
+
+.responses {
+    margin-bottom: 30px;
+}
+
+.responses > div {
+    margin-bottom: 5px;
+}
+
+.responses > button {
+    height: 35px;
+    width: 200px;
+    background-color: rgb(119, 215, 228) 
 }

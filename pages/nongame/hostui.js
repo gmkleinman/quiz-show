@@ -3,6 +3,7 @@ import React from 'react'
 import PanelButtons from "./panelbuttons";
 import styles from '../../styles/hostui.module.css'
 import PlayerHandler from "./playerhandler";
+import FinalControls from "./finalcontrols";
 
 const HostUI = (props) => {
     return (
@@ -14,6 +15,10 @@ const HostUI = (props) => {
             <div className={styles.divider}/>
             <div>
                 <PlayerHandler />
+            </div>
+            <div className={styles.divider}/>
+            <div>
+                <FinalControls />
             </div>
         </div>
     )
