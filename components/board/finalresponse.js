@@ -6,7 +6,7 @@ import { Gstate } from './socketLogic';
 const FinalResponse = (props) => {
     let type = props.type;
     let i = props.i;
-    let { socket } = React.useContext(Gstate);
+    let { socket } = React.useContext(Gstate) || {}
     const [response, setResponse] = useState('-');
     const [show, setShow] = useState(false);
 
@@ -20,7 +20,7 @@ const FinalResponse = (props) => {
                 setShow(true)
             }
         })
-    }, [socket])
+    }, [socket, i, type])
 
     const hiddenStyle = () => {
         if (show) {

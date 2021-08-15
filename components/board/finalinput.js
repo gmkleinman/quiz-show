@@ -4,9 +4,8 @@ import { Gstate } from './socketLogic';
 
 const FinalInput = (props) => {
     let type = props.type;
-    let { socket, playerNum } = React.useContext(Gstate);
+    let { socket, playerNum } = React.useContext(Gstate) || {}
     const [input, setInput] = useState('');
-    // const [hidden, setHidden] = useState(true);
     const [revealType, setRevealType] = useState('wagers')
 
     useEffect(() => {

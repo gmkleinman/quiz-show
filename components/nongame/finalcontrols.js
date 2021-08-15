@@ -4,7 +4,8 @@ import { Gstate } from '../board/socketLogic';
 
 
 const FinalControls = () => {
-    let { socket, playerNames } = React.useContext(Gstate);
+    let { socket } = React.useContext(Gstate) || {}
+    let { playerNames } = React.useContext(Gstate) || ['', '', '']
     const [status, setStatus] = useState(true);
     const [answers, setAnswers] = useState(['', '', '']);
     const [wagers, setWagers] = useState(['', '', '']);
@@ -43,9 +44,6 @@ const FinalControls = () => {
 
     const revealResponse = (resType, i) => {
         socket.emit('reveal final response', resType, i);
-        console.log("REVEALING RESPONSE")
-        console.log(resType)
-        console.log(i)
     }
 
     return (
@@ -72,7 +70,7 @@ const FinalControls = () => {
                     {[0, 1, 2].map((i) => {
                         return (
                             <div className={styles.responses} key={i}>
-                                {playerNames[i]}
+                                {playerNames ? playerNames[i] : null}
                                 <div>
                                     <button
                                         className={styles.revealresponse}

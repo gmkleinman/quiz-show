@@ -1,13 +1,13 @@
 import styles from '../../styles/finalround.module.css'
 import React, { useEffect, useState } from 'react'
-import { Gstate } from '../board/socketLogic';
+import { Gstate } from './socketLogic';
 import FinalInput from './finalinput';
 import FinalResponseContainer from './finalresponsecontainer';
 
 const FinalRound = () => {
     const [showClue, setShowClue] = useState(false);
     const [clue, setClue] = useState('');
-    let { socket } = React.useContext(Gstate);
+    let { socket } = React.useContext(Gstate) || {}
 
 
     useEffect(() => {

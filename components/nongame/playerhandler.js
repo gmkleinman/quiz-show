@@ -2,8 +2,9 @@ import { Gstate } from '../board/socketLogic'
 import styles from '../../styles/hostui.module.css'
 import React, { useState } from 'react'
 
-const PlayerHandler = (props) => {
-    let { socket, playerNames } = React.useContext(Gstate)
+const PlayerHandler = () => {
+    let { socket } = React.useContext(Gstate) || {}
+    let { playerNames } = React.useContext(Gstate) || ['', '', '']
     const [inputs, setInputs] = useState({
         0: '',
         1: '',

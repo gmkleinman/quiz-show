@@ -3,8 +3,8 @@ import { Gstate } from '../board/socketLogic'
 import styles from '../../styles/hostui.module.css'
 
 
-const ClueLoader = (props) => {
-    let { socket } = React.useContext(Gstate)
+const ClueLoader = () => {
+    let { socket } = React.useContext(Gstate) || {}
     const [clueCounter, setClueCounter] = useState(0);
     const [input, setInput] = useState('');
 

@@ -7,7 +7,7 @@ const Player = (props) => {
     let name = props.name;
     let slotNum = props.slotNum;
     let { players, activePlayer, socket, buzzedPlayers,
-        playerName, playerSitting } = React.useContext(Gstate)
+        playerName, playerSitting } = React.useContext(Gstate) || {}
 
     useEffect(() => {
         socket.on('io updating points', (playerPoints) => {

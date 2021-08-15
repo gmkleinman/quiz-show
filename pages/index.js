@@ -1,13 +1,13 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import SocketLogic from './board/socketLogic'
+import SocketLogic from '../components/board/socketLogic'
 import styles from '../styles/board.module.css'
 
 export default function Home() {
     return (
         <div className={styles.appcontainer}>
             <Head>
-                <title>Potat's Game</title>
+                <title>Potat Show</title>
                 <meta name="potat runs games" content="Potat" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>

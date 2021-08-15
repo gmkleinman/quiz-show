@@ -8,7 +8,7 @@ import { Gstate } from './socketLogic'
 import FinalRound from './finalround'
 
 const Game = () => {
-    let { socket } = React.useContext(Gstate)
+    let { socket } = React.useContext(Gstate) || {}
     const [finalRound, setFinalRound] = useState(false);
 
     useEffect(() => {

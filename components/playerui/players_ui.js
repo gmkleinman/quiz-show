@@ -5,8 +5,8 @@ import { Gstate } from '../board/socketLogic';
 import Host from './host'
 
 
-const PlayersUI = (props) => {
-    let { playerNames } = React.useContext(Gstate)
+const PlayersUI = () => {
+    let { playerNames } = React.useContext(Gstate) || ['', '', '']
 
     return (
         <div className={styles.playersUI}>

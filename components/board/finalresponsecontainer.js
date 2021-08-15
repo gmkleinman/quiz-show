@@ -5,7 +5,7 @@ import { Gstate } from './socketLogic';
 
 const FinalResponseContainer = () => {
     const [showResponses, setShowResponses] = useState(false);
-    let { socket } = React.useContext(Gstate);
+    let { socket } = React.useContext(Gstate) || {}
 
     useEffect(() => {
         socket.on('io sends final responses', () => {

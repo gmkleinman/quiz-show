@@ -5,7 +5,7 @@ import styles from '../../styles/hostui.module.css'
 import PlayerHandler from "./playerhandler";
 import FinalControls from "./finalcontrols";
 
-const HostUI = (props) => {
+const HostUI = () => {
     return (
         <div className={styles.hostuicontainer}>
             <div>

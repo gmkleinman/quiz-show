@@ -4,7 +4,7 @@ import styles from '../../styles/board.module.css'
 import { Gstate } from './socketLogic'
 
 const Column = (props) => {
-    let { round, clueList, socket } = React.useContext(Gstate)
+    let { round, clueList, socket } = React.useContext(Gstate) || {}
     const [title, setTitle] = useState('');
     let id = props.id;
     let num = props.num + (6 * (round - 1));
@@ -23,11 +23,11 @@ const Column = (props) => {
                 }
             }
         })
-    }, [socket])
+    }, [socket, id])
 
     useEffect(() => {
         if (clueList && clueList[num]) setTitle(clueList[num][0])
-    }, [clueList])
+    }, [clueList, num])
 
     const setPoints = () => {
         if (round === 1) {

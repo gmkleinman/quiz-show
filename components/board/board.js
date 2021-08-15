@@ -2,7 +2,7 @@ import React from 'react'
 import Column from './column'
 import styles from '../../styles/board.module.css'
 
-const Board = (props) => {
+const Board = () => {
     return (
         <div className={styles.board}>
             {[0,1,2,3,4,5].map((category, i) => {

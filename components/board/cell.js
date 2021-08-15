@@ -12,25 +12,36 @@ const Cell = (props) => {
     const [origin, setOrigin] = useState([0, 0])
     const [gotOrigin, setGotOrigin] = useState(false)
 
-    let { socket, round, undo } = React.useContext(Gstate)
+    let { socket, undo } = React.useContext(Gstate) || {}
     let points = props.points
     let id = props.id
     let text = props.text;
 
-    const hideClueCleanup = () => {
-        setClasses(styles.seenclue)
-        setShowPoints(true)
-        socket.emit('disable buzz ins')
-    }
 
-    const showClue = () => {
-        setClasses(styles.active)
-        setShowPoints(false)
-        setShown(true)
-        setClueClasses(styles.clue)
-    }
 
     useEffect(() => {
+        const hideClueCleanup = () => {
+            setClasses(styles.seenclue)
+            setShowPoints(true)
+            socket.emit('disable buzz ins')
+        }
+
+        const showClue = () => {
+            setClasses(styles.active)
+            setShowPoints(false)
+            setShown(true)
+            setClueClasses(styles.clue)
+        }
+
+        const resetClue = () => {
+            setClasses(styles.cell)
+            setShowPoints(true)
+            setShown(false)
+            setClueClasses(styles.clue)
+            setTop(origin[1])
+            setLeft(origin[0])
+        }
+
         socket.on("send clue to clients", (clickedid, hideClue, bonus) => {
             if (id === clickedid) {
                 if (bonus) {
@@ -55,12 +66,18 @@ const Cell = (props) => {
             }
         })
 
-    }, [shown])
+    }, [shown, socket, id, origin])
 
     useEffect(() => {
-        setCoordinates();
-        resetClue();
-    }, [origin, round])
+        if (!gotOrigin) {
+            let bounds = document.getElementById(id).getBoundingClientRect()
+            setGotOrigin(true)
+            setOrigin([bounds.left, bounds.top])
+            setTop(bounds.top)
+            setLeft(bounds.left)
+        }
+
+    }, [gotOrigin, id])
 
     useEffect(() => {
         socket.emit("get initial clue status")
@@ -71,17 +88,8 @@ const Cell = (props) => {
                 setClasses(styles.seenclue)
             }
         })
-    }, [])
+    }, [id, socket])
 
-    const setCoordinates = () => {
-        if (!gotOrigin) {
-            let bounds = document.getElementById(id).getBoundingClientRect()
-            setGotOrigin(true)
-            setOrigin([bounds.left, bounds.top])
-            setTop(bounds.top)
-            setLeft(bounds.left)
-        }
-    }
 
     const handleClick = (e) => {
         socket.emit("clue clicked", id, points, shown)
@@ -94,14 +102,7 @@ const Cell = (props) => {
         }
     }
 
-    const resetClue = () => {
-        setClasses(styles.cell)
-        setShowPoints(true)
-        setShown(false)
-        setClueClasses(styles.clue)
-        setTop(origin[1])
-        setLeft(origin[0])
-    }
+
 
     return (
         <div className={styles.cellcontainer}

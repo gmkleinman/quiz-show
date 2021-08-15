@@ -8,7 +8,7 @@ const Host = (props) => {
     const [hostCountdown, setHostCountdown] = useState(false);
     const [bonusCountdown, setBonusCountdown] = useState(false);
     const [finalCountdown, setFinalCountdown] = useState(false);
-    let { players, playerSitting, socket, playerName } = React.useContext(Gstate)
+    let { players, playerSitting, socket, playerName } = React.useContext(Gstate) || {}
 
     useEffect(() => {
         socket.on('io starts host countdown', () => {
