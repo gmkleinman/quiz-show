@@ -24,8 +24,8 @@ const ioHandler = (req, res) => {
         let bonusStep = 0;
         let bonusClues = {};
         let playerInputs = {
-            wagers: [0, 0, 0],
-            answers: ['', '', ''],            
+            wagers: ['-', '-', '-'],
+            answers: ['-', '-', '-'],
         }
 
         io.on('connection', socket => {
@@ -90,6 +90,7 @@ const ioHandler = (req, res) => {
             socket.on('load clues', (newClueList, clueArray) => {
                 console.log("loading clues")
                 clueList = newClueList;
+                console.log(clueList)
                 clueCount = 0;
                 clueArray.forEach(clue => {
                     if (clue != '') clueCount++;
@@ -159,14 +160,14 @@ const ioHandler = (req, res) => {
                         io.emit('send clue to clients', id, shown, true)
                     } else if (bonusStep === 1) {
                         console.log("bonus step 1")
-                        if(id.length === 14) {
+                        if (id.length === 14) {
                             clueList[col][row] = bonusClue
                             console.log("here")
                         } else {
                             clueList[col][row] = bonusClue
                             // clueList[tag[0]+tag[1]][tag[2]] = bonusClue
                             console.log("here")
-                        
+
                         }
                         io.emit('io loading clues', clueList)
                     } else if (bonusStep === 2) {
@@ -311,31 +312,33 @@ const ioHandler = (req, res) => {
 
 
             // FINAL CLUE
-            // socket.on('send final answer', (answer, playerNum) => {
-            //     finalAnswers[playerNum] = answer;
-            //     io.emit('io updates answers', finalAnswers)
-            // })
-
-            // socket.on('send final wager', (wager, playerNum) => {
-            //     finalWagers[playerNum] = wager;
-            //     io.emit('io updates answers', finalWagers)
-            // })
 
             socket.on('reveal final clue', () => {
                 console.log("reveal final clue")
-                io.emit('io reveals final clue')
+                let finalClue = clueList['13'];
+                io.emit('io reveals final clue', finalClue)
+            })
+
+            socket.on('begin final timer', () => {
+                console.log("begin final timer")
+                io.emit('io begins final timer')
+                setTimeout(() => {
+                    io.emit('io ends final timer')
+                    io.emit('io sends final responses', (playerInputs))
+                    console.log("end timer and send responses")
+                }, 1500)
+                //change to 30000 after testing
             })
 
             socket.on('player input changed', (type, input, playerNum) => {
                 console.log("input changed");
-                console.log(type)
-                console.log(input)
-                console.log(playerNum)
-                console.log("...")
-                console.log(playerInputs[type])
-                console.log(playerInputs)
                 playerInputs[type][playerNum] = input
                 io.emit('io sends player inputs', (playerInputs))
+            })
+
+            socket.on('reveal final response', (resType, i) => {
+                console.log("revaling final response")
+                io.emit('io reveals final response', resType, i)
             })
         })
 

@@ -155,3 +155,9 @@
     width: 200px;
     background-color: rgb(119, 215, 228) 
 }
+
+.revealresponse {
+    background-color: rgb(119, 215, 228);
+    margin-top: 5px;
+    margin-right: 5px;
+}

@@ -1,7 +1,8 @@
+@import url('https://fonts.googleapis.com/css?family=Shadows+Into+Light+Two');
+
 .finalcontainer {
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
     align-items: center;
     color: white;
     font-size: 40px;
@@ -23,18 +24,45 @@
 }
 
 .responsecontainer {
-    display: flex;
+    margin: 20px;
+    border: black 6px solid;
+    width: 275px;
+    background-color: #0a4d4e;
+    height: 275px;
 }
 
 .responses {
     width: 40%;
-    padding: 20px;
-    margin: 60px;
-    font-size: 40px;
+    padding: 10px;
+    margin-right: 20px;
+    font-size: 30px;
     border: black 6px solid;
     background-color: #0a4d4e;
+    text-align: center;
 }
 
 .hidden {
     visibility: hidden;
+}
+
+.finalresponsecont {
+    display: flex;
+}
+
+.showresponse {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    font-size: 36px;
+    visibility: visible;
+    height: 100px;
+    background-color: #0a4d4e;
+    word-wrap: break-word;
+    text-align: center;
+    padding-top: 30px;
+    font-family: 'Shadows Into Light Two';
+}
+
+.responseInput {
+    background-color: #d1e8e2;
 }

@@ -6,14 +6,15 @@ import { Gstate } from '../board/socketLogic';
 const FinalControls = () => {
     let { socket, playerNames } = React.useContext(Gstate);
     const [status, setStatus] = useState(true);
-    const [answers, setAnswers] = useState(['placeholder', 'placeholder', 'placeholder']);
-    const [wagers, setWagers] = useState([0, 0, 0]);
+    const [answers, setAnswers] = useState(['', '', '']);
+    const [wagers, setWagers] = useState(['', '', '']);
 
     useEffect(() => {
         socket.on('io sends player inputs', (playerInputs) => {
             setAnswers(playerInputs.answers)
             setWagers(playerInputs.wagers)
         })
+
     }, [socket])
 
     const finalRound = () => {
@@ -28,12 +29,23 @@ const FinalControls = () => {
         setStatus(!status);
     }
 
+    const beginTimer = () => {
+        socket.emit('begin final timer');
+    }
+
     const rarestyle = () => {
         if (status) {
             return styles.rarebuttondisabled;
         } else {
             return null;
         }
+    }
+
+    const revealResponse = (resType, i) => {
+        socket.emit('reveal final response', resType, i);
+        console.log("REVEALING RESPONSE")
+        console.log(resType)
+        console.log(i)
     }
 
     return (
@@ -49,8 +61,8 @@ const FinalControls = () => {
                     <button onClick={revealFinal} disabled={status} className={rarestyle()}>
                         Reveal Clue
                     </button>
-                    <button onClick={finalRound} disabled={status} className={rarestyle()}>
-                        Set Timer TODO
+                    <button onClick={beginTimer} disabled={status} className={rarestyle()}>
+                        Set Timer
                     </button>
                 </div>
             </div>
@@ -60,15 +72,24 @@ const FinalControls = () => {
                     {[0, 1, 2].map((i) => {
                         return (
                             <div className={styles.responses} key={i}>
-                                <button onClick={finalRound} disabled={status} className={rarestyle()}>
-                                    {playerNames[i]}
-                                </button>
-
+                                {playerNames[i]}
                                 <div>
-                                    $: {wagers[i]}
+                                    <button
+                                        className={styles.revealresponse}
+                                        onClick={() => revealResponse('answers', i)}
+                                    >
+                                        A
+                                    </button>
+                                    {answers[i]}
                                 </div>
                                 <div>
-                                    A: {answers[i]}
+                                    <button
+                                        className={styles.revealresponse}
+                                        onClick={() => revealResponse('wagers', i)}
+                                    >
+                                        $
+                                    </button>
+                                    {wagers[i]}
                                 </div>
                             </div>
                         )

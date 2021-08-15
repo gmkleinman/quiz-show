@@ -92,10 +92,18 @@
 }
 
 .timer {
-    background: rgb(119, 119, 255);
+    /* background: rgb(119, 119, 255); */
+    background-color: #d9b08c;
     background-size: 200% 100%;
     width: 106%;
     height: 20px;
+}
+
+.finaltimeractive {
+    width: 0px;
+    height: 20px;
+    background: #790000;
+    transition: all 30s linear;
 }
 
 .hostitems {

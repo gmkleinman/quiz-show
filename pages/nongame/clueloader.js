@@ -47,7 +47,7 @@ const ClueLoader = (props) => {
                 </button>
             </div>
             <div>
-                Clue count: {clueCounter} / 72
+                Clue count: {clueCounter} / 73
             </div>
         </div>
     )

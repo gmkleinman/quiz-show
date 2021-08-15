@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import Board from './board/board'
 import SocketLogic from './board/socketLogic'
 import styles from '../styles/board.module.css'
 

@@ -90,7 +90,6 @@ const PanelButtons = (props) => {
                         <button onClick={nextRound} disabled={status} className={rarestyle()}>
                             Next Round
                         </button>
-
                     </div>
                     <div className={styles.rarebuttons}>
                         <button onClick={allowBuzz} disabled={status} className={rarestyle()}>
