@@ -1,18 +1,26 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import SocketLogic from '../components/board/socketLogic'
-import styles from '../styles/board.module.css'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react';
+import { useUser } from '../lib/hooks'
 
-export default function Home() {
+const Home = () => {
+    const router = useRouter()
+    // const user = useUser()
+    const user = useUser({ redirectTo: '/login' })
+
+
+    useEffect(() => {
+            user ?
+                router.push('/game')
+                :
+                // router.push('/login')
+                null
+    })
+
     return (
-        <div className={styles.appcontainer}>
-            <Head>
-                <title>Potat Show</title>
-                <meta name="potat runs games" content="Potat" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-            <SocketLogic />
-            {/* <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} /> */}
-        </div>
+        <>
+        </>
     )
 }
+
+export default Home

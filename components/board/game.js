@@ -8,7 +8,7 @@ import { Gstate } from './socketLogic'
 import FinalRound from './finalround'
 
 const Game = () => {
-    let { socket } = React.useContext(Gstate) || {}
+    let { socket, host } = React.useContext(Gstate) || {}
     const [finalRound, setFinalRound] = useState(false);
 
     useEffect(() => {
@@ -24,12 +24,15 @@ const Game = () => {
 
     return (
         <div className={styles.gamecontainer}>
-            <NewWindow
-                title={'Host UI'}
-                features={{ height: 775, width: 1050 }}
-            >
-                <HostUI />
-            </NewWindow>
+            {host ?
+                <NewWindow
+                    title={'Host UI'}
+                    features={{ height: 775, width: 1050 }}
+                >
+                    <HostUI />
+                </NewWindow>
+                : null
+            }
             {finalRound ?
                 <FinalRound />
                 :

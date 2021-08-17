@@ -39,7 +39,6 @@ const ClueLoader = () => {
         <div className={styles.clueloadercontainer}>
             <div>
                 <input
-                    type='password'
                     onChange={(e) => { handleInput(e) }}
                 />
                 <button onClick={loadClues}>

@@ -22,6 +22,7 @@ class SocketLogic extends React.Component {
             playerSitting: false,
             round: 1,
             clueList: {},
+            host: this.props.host,
         }
     }
 
@@ -115,26 +116,29 @@ class SocketLogic extends React.Component {
         window.addEventListener('keydown', (e) => {
             // TODO: this runs every render; prefer only runs once
             if (!this.state.denyEntry) {
-                if (e.key === 'Control') {
-                    this.setState({
-                        undo: true,
-                    })
-                } else if (e.key === ' ') {
+                if (e.key === ' ') {
                     // buzz in
                     if (this.state.allowBuzzins) {
                         this.state.socket.emit('player buzzed in', this.state.playerNum)
                     }
-                    // BEFOREPRODUCTION: MAKE IT SO ONLY PLAYER NUM 3 CAN DO THIS - HOST
-                } else if (e.key === 'n') {
-                    this.state.socket.emit('allow buzz ins')
-                } else if (e.key === 'm') {
-                    this.state.socket.emit('select buzz in')
-                } else if (e.key === 'y') {
-                    this.state.socket.emit('start host countdown')
-                } else if (e.key === ',') {
-                    this.state.socket.emit('clue answered', false)
-                } else if (e.key === '.') {
-                    this.state.socket.emit('clue answered', true)
+
+                    if (this.state.host === true) {
+                        if (e.key === 'Control') {
+                            this.setState({
+                                undo: true,
+                            })
+                        } else if (e.key === 'n') {
+                            this.state.socket.emit('allow buzz ins')
+                        } else if (e.key === 'm') {
+                            this.state.socket.emit('select buzz in')
+                        } else if (e.key === 'y') {
+                            this.state.socket.emit('start host countdown')
+                        } else if (e.key === ',') {
+                            this.state.socket.emit('clue answered', false)
+                        } else if (e.key === '.') {
+                            this.state.socket.emit('clue answered', true)
+                        }
+                    }
                 }
             }
         })
@@ -183,7 +187,7 @@ class SocketLogic extends React.Component {
                             </div>
                         </div>
                         :
-                        <Game/> 
+                        <Game />
                     }
                 </Gstate.Provider>
             </div>
