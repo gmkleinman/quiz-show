@@ -183,7 +183,9 @@ class SocketLogic extends React.Component {
                                 <button onClick={() => this.enterGame()}>
                                     Click to Enter
                                 </button>
-
+                                <div>
+                                    <a href="/api/logout">Logout</a>
+                                </div>
                             </div>
                         </div>
                         :

@@ -5,7 +5,6 @@ import { useUser } from '../lib/hooks'
 
 const Home = () => {
     const router = useRouter()
-    // const user = useUser()
     const user = useUser({ redirectTo: '/login' })
 
 
@@ -13,7 +12,6 @@ const Home = () => {
             user ?
                 router.push('/game')
                 :
-                // router.push('/login')
                 null
     })
 

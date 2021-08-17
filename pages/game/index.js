@@ -10,10 +10,6 @@ const Game = () => {
             {user ?
                 <>
                     <SocketLogic host={user.host}/>
-                    <div>
-                    <a href="/api/logout">Logout</a>
-
-                    </div>
                 </>
                 :
                 null

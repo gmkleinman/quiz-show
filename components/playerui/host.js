@@ -8,7 +8,7 @@ const Host = (props) => {
     const [hostCountdown, setHostCountdown] = useState(false);
     const [bonusCountdown, setBonusCountdown] = useState(false);
     const [finalCountdown, setFinalCountdown] = useState(false);
-    let { players, playerSitting, socket, playerName } = React.useContext(Gstate) || {}
+    let { players, playerSitting, socket, playerName, host } = React.useContext(Gstate) || {}
 
     useEffect(() => {
         socket.on('io starts host countdown', () => {
@@ -66,7 +66,7 @@ const Host = (props) => {
                 </div>
             </div>
             <div className={styles.hostitems}>
-                {playerSitting || players[slotNum]
+                {playerSitting || players[slotNum] || !host
                     ?
                     null
                     :

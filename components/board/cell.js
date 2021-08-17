@@ -12,7 +12,7 @@ const Cell = (props) => {
     const [origin, setOrigin] = useState([0, 0])
     const [gotOrigin, setGotOrigin] = useState(false)
 
-    let { socket, undo } = React.useContext(Gstate) || {}
+    let { socket, undo, host } = React.useContext(Gstate) || {}
     let points = props.points
     let id = props.id
     let text = props.text;
@@ -92,12 +92,14 @@ const Cell = (props) => {
 
 
     const handleClick = (e) => {
-        socket.emit("clue clicked", id, points, shown)
+        if (host) {
+            socket.emit("clue clicked", id, points, shown)
+        }
     }
 
     const handleUndo = (e) => {
         // BEFOREPRODUCTION: MAKE IT SO ONLY PLAYER NUM 3 CAN DO THIS - HOST
-        if (undo) {
+        if (host && undo) {
             socket.emit("clue reset", id)
         }
     }
