@@ -13,6 +13,15 @@
     display: flex;
 }
 
+.entrycontainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.entrycontainer > div {
+    margin: 4px;
+}
+
 .board {
     display: flex;
     border: solid black 10px;

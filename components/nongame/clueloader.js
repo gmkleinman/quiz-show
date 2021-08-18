@@ -41,12 +41,12 @@ const ClueLoader = () => {
                 <input
                     onChange={(e) => { handleInput(e) }}
                 />
-                <button onClick={loadClues}>
+                <button className={styles.otherbutton} onClick={loadClues}>
                     Load Clues
                 </button>
             </div>
             <div>
-                Clue count: {clueCounter} / 73
+                Clue count: {clueCounter} / 74
             </div>
         </div>
     )

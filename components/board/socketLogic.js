@@ -163,10 +163,6 @@ class SocketLogic extends React.Component {
         })
     }
 
-    renderFinal() {
-
-    }
-
     render() {
         return (
             <div className={styles.socketcontainer}>
@@ -174,15 +170,19 @@ class SocketLogic extends React.Component {
                     {this.state.denyEntry
                         ?
                         <div className={styles.usercount}>
-                            <div>
-                                Users: {this.state.userCount}
-                            </div>
-                            <div>
-                                Enter Name: <input value={this.state.playerName}
-                                    onChange={(e) => { this.setPlayerName(e) }} />
-                                <button onClick={() => this.enterGame()}>
-                                    Click to Enter
-                                </button>
+                            <div className={styles.entrycontainer}>
+                                <div>
+                                    Display Name
+                                </div>
+                                <div>
+                                    <input value={this.state.playerName}
+                                        onChange={(e) => { this.setPlayerName(e) }} />
+                                </div>
+                                <div>
+                                    <button onClick={() => this.enterGame()}>
+                                        Enter
+                                    </button>
+                                </div>
                                 <div>
                                     <a href="/api/logout">Logout</a>
                                 </div>

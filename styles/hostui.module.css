@@ -2,12 +2,27 @@
     display: flex;
 }
 
+.hostuicontainer > * {
+    color: white;
+}
+
+.hostuicontainer input {
+    background-color: black;
+    color: white;
+    border: rgb(61, 61, 61) solid;
+}
+
 .hostuicontainer button {
     cursor:pointer;
 }
 
+.otherbutton {
+    color: white;
+    background-color: black;
+}
+
 .divider {
-    border-left: 4px black solid;
+    border-left: 4px rgb(122, 122, 122) solid;
     margin: 25px;
 }
 
@@ -17,7 +32,8 @@
     flex-direction: column;
     padding: 15px;
     margin: 15px;
-    border-bottom: rgb(0, 0, 0) solid 4px;
+    border-bottom: rgb(122, 122, 122) solid 4px;
+    color: white;
 }
 
 .buttoncontainer {
@@ -28,7 +44,8 @@
     margin: 10px;
     height: 100px;
     width: 100px;
-    background-color: rgb(119, 215, 228)
+    background-color: rgb(0, 92, 92);
+    color: rgb(6, 189, 0);
 }
 
 .rarebuttons {
@@ -39,7 +56,8 @@
     margin: 10px;
     height: 60px;
     width: 70px;
-    background-color: rgb(119, 215, 228) 
+    background-color: rgb(0, 92, 92); 
+    color: white;
 }
 
 .rarebuttondisabled {
@@ -73,7 +91,8 @@
     height: 100px;
     width: 130px;
     font-size: 50px;
-    background-color: rgb(119, 215, 228)
+    background-color: rgb(0, 92, 92);
+    color: white;
 }
 
 .clueloadercontainer {
@@ -82,8 +101,9 @@
     flex-direction: column;
     padding: 15px;
     margin: 15px;
-    border-bottom: rgb(0, 0, 0) solid 4px;
-    border-top: rgb(0, 0, 0) solid 4px;
+    border-bottom: rgb(122, 122, 122) solid 4px;
+    border-top: rgb(122, 122, 122) solid 4px;
+
 }
 
 .playerscorechanger {
@@ -128,10 +148,11 @@
     width: 40px;
     font-size: 22px;
     margin: 5px;
+    color: white;
 }
 
 .kickbutton {
-    background-color: rgba(255, 255, 2, 0.863);
+    background-color: rgba(255, 255, 78, 0.863);
     margin-right: 5px;
 }
 
@@ -139,7 +160,7 @@
     display: flex;
     padding: 15px;
     margin: 15px;
-    border-bottom: rgb(0, 0, 0) solid 4px;
+    border-bottom: rgb(122, 122, 122) solid 4px;
 }
 
 .responses {
@@ -153,11 +174,36 @@
 .responses > button {
     height: 35px;
     width: 200px;
-    background-color: rgb(119, 215, 228) 
+    background-color: rgb(0, 92, 92); 
+    color: white;
 }
 
 .revealresponse {
-    background-color: rgb(119, 215, 228);
+    background-color: rgb(0, 92, 92);
     margin-top: 5px;
     margin-right: 5px;
+    font-size: 26px;
+    color: white;
+    width: 40px;
+}
+
+.revealdisabled {
+    background-color: rgb(0, 92, 92);
+    margin-top: 5px;
+    margin-right: 5px;
+    font-size: 26px;
+    color: white;
+    width: 40px;
+    opacity: 0.4;
+}
+
+.playercount {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 15px;
+    margin: 15px;
+    border-bottom: rgb(122, 122, 122) solid 4px;
+    border-top: rgb(122, 122, 122) solid 4px;
+    color: white;
 }

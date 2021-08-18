@@ -2,13 +2,12 @@ import { useState } from 'react'
 import Router from 'next/router'
 import { useUser } from '../lib/hooks'
 import Form from '../components/form'
+import styles from '../styles/signin.module.css'
 
 const Login = () => {
     const user = useUser();
-    useUser({ redirectTo: '/game', redirectIfFound: true })
-
     const [errorMsg, setErrorMsg] = useState('')
-
+    useUser({ redirectTo: '/game', redirectIfFound: true })
 
     async function handleSubmit(e) {
         e.preventDefault()
@@ -41,17 +40,8 @@ const Login = () => {
         <>
             {user ?
                 null :
-                <div className="login">
+                <div className={styles.login}>
                     <Form isLogin errorMessage={errorMsg} onSubmit={handleSubmit} />
-                    <style jsx>{`
-          .login {
-              max-width: 21rem;
-              margin: 0 auto;
-              padding: 1rem;
-              border: 1px solid #ccc;
-              border-radius: 4px;
-            }
-            `}</style>
                 </div>
             }
         </>

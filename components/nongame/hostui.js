@@ -4,6 +4,7 @@ import PanelButtons from "./panelbuttons";
 import styles from '../../styles/hostui.module.css'
 import PlayerHandler from "./playerhandler";
 import FinalControls from "./finalcontrols";
+import PlayerCount from "./playercount";
 
 const HostUI = () => {
     return (
@@ -12,11 +13,16 @@ const HostUI = () => {
                 <ClueLoader />
                 <PanelButtons />
             </div>
-            <div className={styles.divider}/>
+
+            <div className={styles.divider} />
+
             <div>
+                <PlayerCount />
                 <PlayerHandler />
             </div>
-            <div className={styles.divider}/>
+
+            <div className={styles.divider} />
+            
             <div>
                 <FinalControls />
             </div>

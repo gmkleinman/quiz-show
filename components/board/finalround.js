@@ -7,8 +7,8 @@ import FinalResponseContainer from './finalresponsecontainer';
 const FinalRound = () => {
     const [showClue, setShowClue] = useState(false);
     const [clue, setClue] = useState('');
-    let { socket } = React.useContext(Gstate) || {}
-
+    let { socket,  clueList} = React.useContext(Gstate) || {}
+    let finalCategory = clueList['13'][0];
 
     useEffect(() => {
         socket.on('io reveals final clue', (finalClue) => {
@@ -25,20 +25,11 @@ const FinalRound = () => {
         }
     }
 
-    const responsesStyle = () => {
-        if (showResponses) {
-            return styles.hidden;
-        } else {
-            return null;
-        }
-    }
-
     return (
         <div className={styles.finalcontainer}>
             <div className={styles.finalcategory}>
-                FINAL CATEGORY
+                {finalCategory}
             </div>
-
             <div className={styles.finalclue}>
                 <span className={finalClueStyle()}>
                     {clue}

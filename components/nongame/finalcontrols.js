@@ -42,6 +42,14 @@ const FinalControls = () => {
         }
     }
 
+    const responsestyle = () => {
+        if (status) {
+            return styles.revealdisabled;
+        } else {
+            return styles.revealresponse;
+        }
+    }
+
     const revealResponse = (resType, i) => {
         socket.emit('reveal final response', resType, i);
     }
@@ -49,8 +57,8 @@ const FinalControls = () => {
     return (
         <>
             <div className={styles.clueloadercontainer}>
-                <button onClick={toggleFinal}>
-                    Click to Enable/Disable
+                <button className={styles.otherbutton} onClick={toggleFinal}>
+                    Enable/Disable
                 </button>
                 <div className={styles.rarebuttons}>
                     <button onClick={finalRound} disabled={status} className={rarestyle()}>
@@ -73,7 +81,8 @@ const FinalControls = () => {
                                 {playerNames ? playerNames[i] : null}
                                 <div>
                                     <button
-                                        className={styles.revealresponse}
+                                        className={responsestyle()}
+                                        disabled={status}
                                         onClick={() => revealResponse('answers', i)}
                                     >
                                         A
@@ -82,7 +91,8 @@ const FinalControls = () => {
                                 </div>
                                 <div>
                                     <button
-                                        className={styles.revealresponse}
+                                        className={responsestyle()}
+                                        disabled={status}
                                         onClick={() => revealResponse('wagers', i)}
                                     >
                                         $

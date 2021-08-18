@@ -8,19 +8,25 @@
     font-size: 40px;
     border: solid black 10px;
     width: 1050px;
-    background-color: #29302d;
+    background-color: #262928;
 }
 
 .finalcategory {
     margin: 40px;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
 .finalclue {
+    display: flex;
     text-align: center;
+    justify-content: center;
+    align-items: center;
     border: black 6px solid;
     padding: 40px;
     width: 80%;
     background-color: #0a4d4e;
+    height: 250px;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
 .responsecontainer {

@@ -79,8 +79,8 @@ const PanelButtons = () => {
                 </div>
             </div>
             <div className={styles.commoncontainer}>
-                <button onClick={enableButtons}>
-                    Click to Enable
+                <button className={styles.otherbutton} onClick={enableButtons}>
+                    Enable
                 </button>
                 <div className={styles.rarecontainer}>
                     <div className={styles.rarebuttons}>

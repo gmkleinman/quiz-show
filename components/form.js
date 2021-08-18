@@ -1,72 +1,26 @@
-import Link from 'next/link'
+import styles from '../styles/signin.module.css'
 
 const Form = ({ isLogin, errorMessage, onSubmit }) => (
-  <form onSubmit={onSubmit}>
-    <label>
-      <span>Username-o</span>
-      <input type="text" name="username" required />
-    </label>
-    <label>
-      <span>Password-o</span>
-      <input type="password" name="password" required />
-    </label>
+    <form className={styles.form} onSubmit={onSubmit}>
+        <label className={styles.form}>
+            <span className={styles.span}>Username</span>
+            <input className={styles.input} type="text" name="username" required />
+        </label>
+        <label className={styles.form}>
+            <span>Password</span>
+            <input className={styles.input} type="password" name="password" required />
+        </label>
 
-    <div className="submit">
-      {isLogin ? (
-        <>
-          <button type="submit">Login</button>
-        </>
-      ) : (
-        <>
-          {/* <Link href="/login"> */}
-            This shouldn't exist
-          {/* </Link> */}
-        </>
-      )}
-    </div>
+        <div className="submit">
+            {isLogin ?
+                <>
+                    <button type="submit">Login</button>
+                </>
+                : null}
+        </div>
 
-    {errorMessage && <p className="error">{errorMessage}</p>}
-
-    <style jsx>{`
-      form,
-      label {
-        display: flex;
-        flex-flow: column;
-      }
-      label > span {
-        font-weight: 600;
-      }
-      input {
-        padding: 8px;
-        margin: 0.3rem 0 1rem;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-      .submit {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .submit > a {
-        text-decoration: none;
-      }
-      .submit > button {
-        padding: 0.5rem 1rem;
-        cursor: pointer;
-        background: #fff;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-      .submit > button:hover {
-        border-color: #888;
-      }
-      .error {
-        color: brown;
-        margin: 1rem 0 0;
-      }
-    `}</style>
-  </form>
+        {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+    </form>
 )
 
 export default Form

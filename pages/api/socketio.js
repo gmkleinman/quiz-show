@@ -88,19 +88,24 @@ const ioHandler = (req, res) => {
             // LOADING CLUES
 
             socket.on('load clues', (newClueList, clueArray) => {
-                console.log("loading clues")
-                clueList = newClueList;
-                console.log(clueList)
-                clueCount = 0;
-                clueArray.forEach(clue => {
-                    if (clue != '') clueCount++;
-                });
+                try {
+                    console.log("loading clues")
+                    clueList = newClueList;
+                    console.log(clueList)
+                    clueCount = 0;
+                    clueArray.forEach(clue => {
+                        if (clue != '') clueCount++;
+                    });
 
-                io.emit('io update clue count', clueCount)
-                setBonusClues();
-                console.log('bonus clues:')
-                console.log(bonusClues)
-                io.emit('io loading clues', clueList)
+                    io.emit('io update clue count', clueCount)
+                    setBonusClues();
+                    console.log('bonus clues:')
+                    console.log(bonusClues)
+                    io.emit('io loading clues', clueList)
+                }
+                catch {
+                    console.log('failed to load clue list')
+                }
             })
 
             const setBonusClues = () => {
@@ -150,9 +155,6 @@ const ioHandler = (req, res) => {
                 }
 
                 let tag = col.toString() + row.toString();
-                console.log("here's my tag")
-                console.log(tag)
-                console.log("here's bonus clues at taa")
                 let bonusClue = bonusClues[tag];
                 console.log(bonusClue)
                 if (bonusClue) {
@@ -162,12 +164,8 @@ const ioHandler = (req, res) => {
                         console.log("bonus step 1")
                         if (id.length === 14) {
                             clueList[col][row] = bonusClue
-                            console.log("here")
                         } else {
                             clueList[col][row] = bonusClue
-                            // clueList[tag[0]+tag[1]][tag[2]] = bonusClue
-                            console.log("here")
-
                         }
                         io.emit('io loading clues', clueList)
                     } else if (bonusStep === 2) {
@@ -277,7 +275,8 @@ const ioHandler = (req, res) => {
             })
 
             socket.on('final round', () => {
-                io.emit('io final round');
+                let finalCategory = clueList['13'][0];
+                io.emit('io final round', finalCategory);
             })
 
             // HOST OVERRIDES
@@ -315,7 +314,7 @@ const ioHandler = (req, res) => {
 
             socket.on('reveal final clue', () => {
                 console.log("reveal final clue")
-                let finalClue = clueList['13'];
+                let finalClue = clueList['13'][1];
                 io.emit('io reveals final clue', finalClue)
             })
 
