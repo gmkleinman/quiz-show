@@ -2,6 +2,7 @@ import io from 'socket.io-client'
 import React from 'react'
 import styles from '../../styles/board.module.css'
 import Game from './game'
+import Link from 'next/link'
 
 export const Gstate = React.createContext();
 
@@ -184,7 +185,7 @@ class SocketLogic extends React.Component {
                                     </button>
                                 </div>
                                 <div>
-                                    <a href="/api/logout">Logout</a>
+                                    <Link href="/api/logout">Logout</Link>
                                 </div>
                             </div>
                         </div>
