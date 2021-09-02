@@ -91,7 +91,6 @@ const ioHandler = (req, res) => {
                 try {
                     console.log("loading clues")
                     clueList = newClueList;
-                    console.log(clueList)
                     clueCount = 0;
                     clueArray.forEach(clue => {
                         if (clue != '') clueCount++;
@@ -156,12 +155,10 @@ const ioHandler = (req, res) => {
 
                 let tag = col.toString() + row.toString();
                 let bonusClue = bonusClues[tag];
-                console.log(bonusClue)
                 if (bonusClue) {
                     if (bonusStep === 0) {
                         io.emit('send clue to clients', id, shown, true)
                     } else if (bonusStep === 1) {
-                        console.log("bonus step 1")
                         if (id.length === 14) {
                             clueList[col][row] = bonusClue
                         } else {
@@ -171,7 +168,10 @@ const ioHandler = (req, res) => {
                     } else if (bonusStep === 2) {
                         io.emit('send clue to clients', id, shown)
                         shownClues[id] = true;
-                        clearCategory(id)
+                        // clearCategory(id)
+                        for (let i = 0; i < 14; i++) {
+                            clearCategory(i)
+                        }
                     }
                     bonusStep = (bonusStep + 1) % 3
                 } else {
@@ -185,22 +185,22 @@ const ioHandler = (req, res) => {
             })
 
             const clearCategory = (col, id) => {
-                // more dumb stuff I have to deal with because of the other dumb stuff
+                // more dumb stuff I have to deal with because of dumb stuff I did
                 let seenCol;
                 let seenClues = Object.keys(shownClues);
                 let count = 0;
                 seenClues.forEach(seenClue => {
                     if (seenClue.length === 15) {
-                        seenCol = parseInt(seenClue[7] + seenClue[8]);
+                        seenCol = parseInt(seenClue[7] + seenClue[8]) + 1;
                     } else {
-                        seenCol = parseInt(seenClue[7]);
+                        seenCol = parseInt(seenClue[7]) + 1;
                     }
 
                     if (seenCol === col) {
                         count++;
                     }
                 });
-                if (count >= 5) io.emit('io sends clear category', col)
+                if (count >= 5) io.emit('io sends clear category', (col % 6) - 1)
             }
 
             socket.on("clue reset", (id) => {
@@ -325,8 +325,7 @@ const ioHandler = (req, res) => {
                     io.emit('io ends final timer')
                     io.emit('io sends final responses', (playerInputs))
                     console.log("end timer and send responses")
-                }, 1500)
-                //change to 30000 after testing
+                }, 30000)
             })
 
             socket.on('player input changed', (type, input, playerNum) => {

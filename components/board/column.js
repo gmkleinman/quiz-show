@@ -13,7 +13,7 @@ const Column = (props) => {
     useEffect(() => {
         socket.on('io sends clear category', categoryNum => {
             // might go back and fix this to not be dumb and hardcoded
-            if (id.length === 14) {
+            if (id.length === 15) {
                 if (categoryNum === parseInt(id[7])) {
                     setTitle('');
                 }

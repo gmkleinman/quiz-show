@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Staatliches');
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
 .usercount {
     color: white;
 }
@@ -6,7 +9,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 40px;
+    height: 100vh;
+    width: 100vw;
 }
 
 .gamecontainer {
@@ -33,6 +37,7 @@
     align-items: center;
     margin-bottom: 0;
     padding-bottom: 0;
+    width: 9.6vw;
 }
 
 .cellcontainer {
@@ -40,8 +45,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 190px;
-    height: 140px;
+    width: 9.3vw;
+    height: 14vh;
     border: solid black 3px;
 }
 
@@ -57,17 +62,18 @@
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    width: 175px;
-    height: 100px;
+    width: 7vw;
+    height: 6vh;
     background-color: rgb(0, 65, 65);
     user-select: none;
     cursor: pointer;
 }
 
 .points {
-    font-size: 75px;
+    font-size: 3.3vw;
     color: rgb(255, 255, 255);
     text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+    font-weight: 400;
 }
 
 .header {
@@ -75,11 +81,13 @@
     align-items: center;
     justify-content: center;
     color: white;
-    width: 170px;
-    height: 200px;
+    width: 8.3vw;
+    height: 14vh;
     background-color: rgb(0, 65, 65);
-    font-size: 30px;
+    font-size: 1.5vw;
+    font-family: 'Staatliches';
     padding: 10px;
+    letter-spacing: .05rem;
     border: solid black 3px;
     text-align: center;
     border-bottom: solid black 10px;
@@ -88,34 +96,37 @@
 }
 
 .clue {
-    font-size: 12px;
+    font-size: .475vw;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
     text-align: center;
-    padding: 18px;
+    padding-left: 1.3vw;
+    padding-right: 1.3vw;
     color: white;
     text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+    font-family: 'Nunito';
 }
 
 .activeclue {
-    transition: all .6s ease-in;
-    font-size: 80px;
+    transition: all .55s ease-out;
+    font-size: 4vw;
     text-align: center;
-    padding: 120px;
+    padding: 3vw;
     color: white;
     text-shadow: -4px -4px 0 #000, 4px -4px 0 #000, -4px 4px 0 #000, 4px 4px 0 #000;
     user-select: none;
     cursor: none;
+    font-family: 'Nunito';
+    width: 59.5vw;
 }
 
 .active {
-    font-size: 200px;
     background-color: rgb(0, 51, 51);
-    transition: all .6s ease-in;
+    transition: all .55s ease-out;
     position: fixed; 
-    width: calc(63vw);
-    height: calc(100vh);
+    width: 59.5vw;
+    height: 100vh;
     top: 0 !important; 
     left: 0 !important; 
     border: none;
@@ -125,6 +136,7 @@
     align-items: center;
     user-select: none;
     cursor: none;
+    font-family: 'Nunito';
 }
 
 .seenclue {
