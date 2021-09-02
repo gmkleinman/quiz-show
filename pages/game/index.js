@@ -9,7 +9,7 @@ const Game = () => {
         <div className={styles.appcontainer}>
             {user ?
                 <>
-                    <SocketLogic host={user.host}/>
+                    <SocketLogic host={user.host} />
                 </>
                 :
                 null

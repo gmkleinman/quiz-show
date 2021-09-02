@@ -9,10 +9,10 @@ const Home = () => {
 
 
     useEffect(() => {
-            user ?
-                router.push('/game')
-                :
-                null
+        user ?
+            router.push('/game')
+            :
+            null
     })
 
     return (
