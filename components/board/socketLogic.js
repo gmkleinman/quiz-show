@@ -144,6 +144,12 @@ class SocketLogic extends React.Component {
             }
         })
 
+        window.addEventListener('touchstart', () => {
+            if (this.state.allowBuzzins) {
+                this.state.socket.emit('player buzzed in', this.state.playerNum)
+            }
+        })
+
         window.addEventListener('keyup', (e) => {
             this.setState({
                 undo: false,
