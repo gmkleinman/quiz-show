@@ -1,10 +1,11 @@
 import ClueLoader from "./clueloader";
-import React from 'react'
+import React from 'react';
 import PanelButtons from "./panelbuttons";
-import styles from '../../styles/hostui.module.css'
+import styles from '../../styles/hostui.module.css';
 import PlayerHandler from "./playerhandler";
 import FinalControls from "./finalcontrols";
 import PlayerCount from "./playercount";
+import FocusViewer from "./focusviewer";
 
 const HostUI = () => {
     return (
@@ -25,6 +26,10 @@ const HostUI = () => {
             
             <div>
                 <FinalControls />
+            </div>
+
+            <div>
+                <FocusViewer />
             </div>
         </div>
     )

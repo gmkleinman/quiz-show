@@ -1,6 +1,6 @@
 import { Gstate } from '../board/socketLogic'
 import styles from '../../styles/hostui.module.css'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const PlayerHandler = () => {
     let { socket } = React.useContext(Gstate) || {}
@@ -10,6 +10,19 @@ const PlayerHandler = () => {
         1: '',
         2: '',
     })
+    const [focusedPlayers, setFocusedPlayers] = useState({});
+
+    // useEffect(() => {
+    //     socket.on('update window focus', focusLog, playerNum, playerFocus, () => {
+        //     setLocalFocusLog(focusLog);
+        //     updatePlayerFocus(playerNum, playerFocus);
+            // change class of player's name to green or red depending on focus
+        // })
+    // }, [socket])
+
+    const playerFocus = () => {
+        // TODO: logic
+    }
 
     const handleInputChange = (e, playerNum) => {
         let newInputs = Object.assign({}, inputs)
@@ -47,7 +60,9 @@ const PlayerHandler = () => {
                             <button className={styles.kickbutton} onClick={() => kickPlayer(i)}>
                                 👢
                             </button>
-                            {playerNames[i]}
+                            <span className={playerFocus()}>
+                                {playerNames[i]}
+                            </span>
                         </div>
                         <input
                             onChange={(e) => { handleInputChange(e, i) }}

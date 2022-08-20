@@ -155,6 +155,14 @@ class SocketLogic extends React.Component {
                 undo: false,
             })
         })
+
+        window.addEventListener("focus", () => {
+            this.state.socket.emit('window focus change', this.state.playerNum, true)
+        })
+    
+        window.addEventListener("blur", () => {
+            this.state.socket.emit('window focus change', this.state.playerNum, false)
+        })
     }
 
     setPlayerName(e) {

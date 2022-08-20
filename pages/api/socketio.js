@@ -300,16 +300,31 @@ const ioHandler = (req, res) => {
                 round = 1;
                 bonusClues = {};
                 bonusStep = 0;
-
+                
+                io.emit('io not final round')
                 io.emit('io updating points', playerPoints);
                 io.emit('io sends clue status', shownClues)
                 io.emit('io loading clues', clueList)
                 io.emit('io update clue count', clueCount)
                 io.emit('io changing round', round)
-                io.emit('io not final round')
             })
 
+            let focusLog = {};
+            socket.on('window focus change', (playerNum, playerFocus) => {
+                // focusChange(playerNum, playerFocus);
+                // let date = new Date();
+                // time = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true })
+                // if (!focusLog[playerNum]) {
+                //     focusLog[playerNum] = [];
+                // }
+                // focusLog[playerNum].push(time);
+                // io.emit('update window focus', focusLog, playerNum, playerFocus);
 
+                //TODO: make focusChange function
+                // work this out
+            })
+
+            
             // FINAL CLUE
 
             socket.on('reveal final clue', () => {
